@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "392152528086",
+    "firebase_url": "https://chaapo-nator.firebaseio.com",
+    "project_id": "chaapo-nator",
+    "storage_bucket": "chaapo-nator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392152528086:android:8d089d541cb9aabb8a0577",
+        "android_client_info": {
+          "package_name": "com.example.canteen_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "392152528086-g6q9llgu1dalpndgukhhagpi6bn7f3vj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.canteen_app",
+            "certificate_hash": "b5e57e2ae7860967c036574c0747338e217a0058"
+          }
+        },
+        {
+          "client_id": "392152528086-hb32g3kpd94282qmevh6hulupd7dq3au.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtOAQ7eYowH8LvoYN0b-voR5YaGLWC-uM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "392152528086-hb32g3kpd94282qmevh6hulupd7dq3au.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

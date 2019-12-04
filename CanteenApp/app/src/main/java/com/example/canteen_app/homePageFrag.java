@@ -6,12 +6,15 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.material.card.MaterialCardView;
 
 import static com.example.canteen_app.MainActivity.username;
 
@@ -33,6 +36,27 @@ public class homePageFrag extends Fragment
         sarojini.setImageResource(R.drawable.sarojioniliner);
         ImageView rajiv = view.findViewById(R.id.rajivg);
         rajiv.setImageResource(R.drawable.rajivliner);
+
+        //listener for RJB
+        MaterialCardView RJBCard = view.findViewById(R.id.RJB);
+        RJBCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    // Replace the contents of the container with the new fragment
+                    ft.replace(R.id.your_placeholder, new RJBMenu());
+                    // or ft.add(R.id.your_placeholder, new FooFragment());
+                    // Complete the changes added above
+                    ft.commit();
+
+            }
+        });
+        //listener-end
+
+
         return view;
+
     }
 }
