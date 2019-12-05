@@ -6,18 +6,29 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 
 public class RJBMenu extends Fragment {
@@ -31,11 +42,22 @@ public class RJBMenu extends Fragment {
         GridLayout gl = view.findViewById(R.id.grid);
 
         //query code
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
 
-        myRef.setValue("Hello, World!");
-        //query code end
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Create a new user with a first and last name
+
+
+        DocumentReference docRef = db.collection("RJB-items").document("RYQsMe2PzsyLoxZbobfj");
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Item item = documentSnapshot.toObject(Item.class);
+
+                Toast toast = Toast.makeText(getActivity(), item.Name, Toast.LENGTH_LONG);
+                toast.show();
+        }
+        });
+
 
 
         int length =10; //he thik karne
@@ -88,5 +110,13 @@ public class RJBMenu extends Fragment {
 
 
 
+
+}
+
+class Item
+{
+    public String Name;
+    public int Price, Quantity;
+    public Boolean Availablity;
 
 }
