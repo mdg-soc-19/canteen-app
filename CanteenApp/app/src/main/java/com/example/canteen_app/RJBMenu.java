@@ -18,12 +18,18 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,81 +37,112 @@ import java.util.Map;
 import static android.content.ContentValues.TAG;
 
 
-public class RJBMenu extends Fragment {
-
+public class RJBMenu extends Fragment implements View.OnClickListener {
+    public int k;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_rjbmenu, container, false);
         // Inflate the layout for this fragment
-        GridLayout gl = view.findViewById(R.id.grid);
-
+        final GridLayout gl = view.findViewById(R.id.grid);
+        final Context thiscontext = this.getActivity();
         //query code
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        // Create a new user with a first and last name
+        db.collection("RJB-items")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int i = 1;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Item item = document.toObject(Item.class);
+                                String name = item.Name;
+                                int price = item.Price;
+                                int qty = item.Quantity;
+                                boolean aty = item.Availablity;
+
+                                //adding to frag
+                                //column1
+                                TextView tv = new TextView(getActivity().getApplicationContext());
+                                tv.setWidth(50);
+                                tv.setText(Integer.toString(i++));
+                                tv.setTextColor(Color.parseColor("#000000"));
+                                tv.setBackgroundColor(Color.parseColor("#ffffff"));
+                                tv.setId(i + 10*1);
+                                gl.addView(tv);
 
 
-        DocumentReference docRef = db.collection("RJB-items").document("RYQsMe2PzsyLoxZbobfj");
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Item item = documentSnapshot.toObject(Item.class);
+                                //column2
+                                TextView tv2 = new TextView(getActivity().getApplicationContext());
+                                tv2.setWidth(200);
+                                tv2.setText(name);
+                                tv2.setTextColor(Color.parseColor("#000000"));
+                                tv2.setBackgroundColor(Color.parseColor("#ffffff"));
+                                tv2.setId(i + 10*2);
+                                gl.addView(tv2);
 
-                Toast toast = Toast.makeText(getActivity(), item.Name, Toast.LENGTH_LONG);
-                toast.show();
-        }
-        });
+                                //column3
+                                TextView tv3 = new TextView(getActivity().getApplicationContext());
+                                tv3.setWidth(100);
+                                tv3.setText("Rs. " + price);
+                                tv3.setTextColor(Color.parseColor("#000000"));
+                                tv3.setBackgroundColor(Color.parseColor("#ffffff"));
+                                tv3.setId(i + 10*3);
+                                gl.addView(tv3);
 
+                                //column4
+                                Button mb = new Button(getActivity().getApplicationContext());
+                                mb.setWidth(100);
+                                if(aty)
+                                    mb.setBackgroundColor(Color.parseColor("#D81B60"));
+                                else
+                                    mb.setBackgroundColor(Color.parseColor("#696969"));
+                                mb.setText("ADD");
+                                mb.setId(i + 10*4);
 
+                                mb.setText("ADD");
+                                mb.setId(i + 10*4);
 
-        int length =10; //he thik karne
-        for (int i = 0; i < length; i++)
+                                gl.addView(mb);
+                                mb.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        int id = v.getId();
+                                        Toast toast = Toast.makeText(getActivity(), "id is " + id, Toast.LENGTH_LONG);
+                                        toast.show();
+                                    }
+                                });
+                                //end of adding
+                            }
+                            k = i;
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        //Query ends here
+
+        /* for(int j=0; j<k; j++)
         {
-            //column1
-            TextView tv = new TextView(getActivity().getApplicationContext());
-            tv.setWidth(50);
-            tv.setText("1");
-            tv.setTextColor(Color.parseColor("#000000"));
-            tv.setBackgroundColor(Color.parseColor("#ffffff"));
-            gl.addView(tv);
-
-            //column2
-            TextView tv2 = new TextView(getActivity().getApplicationContext());
-            tv2.setWidth(200);
-            tv2.setText("Maggi");
-            tv2.setTextColor(Color.parseColor("#000000"));
-            tv2.setBackgroundColor(Color.parseColor("#ffffff"));
-            gl.addView(tv2);
-
-            //column3
-            TextView tv3 = new TextView(getActivity().getApplicationContext());
-            tv3.setWidth(100);
-            tv3.setText("Rs. " + "20");
-            tv3.setTextColor(Color.parseColor("#000000"));
-            tv3.setBackgroundColor(Color.parseColor("#ffffff"));
-            gl.addView(tv3);
-
-            //column4
-
-            Button mb = new Button(getActivity().getApplicationContext());
-            mb.setWidth(100);
-            mb.setBackgroundColor(Color.parseColor("#D81B60"));
-            mb.setText("ADD");
-
-            gl.addView(mb);
-
-
+            int t = j + 40;
+            Button one = view.findViewById(t);
+            one.setOnClickListener(this);
         }
-
-
-
+        */
 
         return view;
     }
 
 
+    public void onClick(View v)
+    {
+
+
+    }
 
 
 
