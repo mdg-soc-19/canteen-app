@@ -34,6 +34,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import static android.content.ContentValues.TAG;
 
 
@@ -124,15 +125,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener {
                         }
                     }
                 });
-        //Query ends here
 
-        /* for(int j=0; j<k; j++)
-        {
-            int t = j + 40;
-            Button one = view.findViewById(t);
-            one.setOnClickListener(this);
-        }
-        */
 
         return view;
     }

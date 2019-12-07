@@ -16,13 +16,14 @@ import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 
-import static com.example.canteen_app.MainActivity.username;
+
 
 
 public class homePageFrag extends Fragment
 {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
         ImageView rajendra = view.findViewById(R.id.rajendrap);
         rajendra.setImageResource(R.drawable.rajendraliner);
