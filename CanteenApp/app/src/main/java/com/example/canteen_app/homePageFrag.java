@@ -21,6 +21,7 @@ import com.google.android.material.card.MaterialCardView;
 
 public class homePageFrag extends Fragment
 {
+    private static int resumer = 1;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 

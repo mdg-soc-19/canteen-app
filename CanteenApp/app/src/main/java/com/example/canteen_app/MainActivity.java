@@ -19,7 +19,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 public class MainActivity extends AppCompatActivity  {
     static final int RC_SIGN_IN = 9001;
-
+    static final String LAST_FRAGMENT = "userFragment";
+    static int mCurrentFragment;
+    static int mDefaultFragment = 1;
     static GoogleSignInClient mGoogleSignInClient;
     public void onCreate(Bundle savedInstanceState)
     {
@@ -37,6 +39,12 @@ public class MainActivity extends AppCompatActivity  {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         //authcode
+
+        if (savedInstanceState != null) {
+            mCurrentFragment = savedInstanceState.getInt(LAST_FRAGMENT);
+        }
+        else
+            { mCurrentFragment = mDefaultFragment; }
     }
 
     @Override
@@ -47,6 +55,13 @@ public class MainActivity extends AppCompatActivity  {
         updateUI(account);
 
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(LAST_FRAGMENT, mCurrentFragment);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
     public void updateUI(GoogleSignInAccount account)
     {
         if(account==null)
@@ -60,12 +75,26 @@ public class MainActivity extends AppCompatActivity  {
         }
         else
         {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            // Replace the contents of the container with the new fragment
-            ft.replace(R.id.your_placeholder, new homePageFrag());
-            // or ft.add(R.id.your_placeholder, new FooFragment());
-            // Complete the changes added above
-            ft.commit();
+            switch(mCurrentFragment)
+            {
+                case 1:
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    // Replace the contents of the container with the new fragment
+                    ft.replace(R.id.your_placeholder, new homePageFrag());
+                    // or ft.add(R.id.your_placeholder, new FooFragment());
+                    // Complete the changes added above
+                    ft.commit();
+                    break;
+                case 2:
+                    ft = getSupportFragmentManager().beginTransaction();
+                    // Replace the contents of the container with the new fragment
+                    ft.replace(R.id.your_placeholder, new RJBMenu());
+                    // or ft.add(R.id.your_placeholder, new FooFragment());
+                    // Complete the changes added above
+                    ft.commit();
+
+            }
+
         }
     }
 }

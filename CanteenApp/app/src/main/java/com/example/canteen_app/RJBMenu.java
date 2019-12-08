@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,11 +36,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+
 import static android.content.ContentValues.TAG;
 
 
 public class RJBMenu extends Fragment implements View.OnClickListener {
     public int k;
+    private static int resumer = 2;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,7 +52,8 @@ public class RJBMenu extends Fragment implements View.OnClickListener {
         final GridLayout gl = view.findViewById(R.id.grid);
         final Context thiscontext = this.getActivity();
         //query code
-
+        final ProgressBar pb = view.findViewById(R.id.pBar);
+        pb.setVisibility(View.VISIBLE);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("RJB-items")
                 .get()
@@ -58,6 +62,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             int i = 1;
+                            pb.setVisibility(View.GONE);
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Item item = document.toObject(Item.class);
@@ -137,10 +142,11 @@ public class RJBMenu extends Fragment implements View.OnClickListener {
 
     }
 
-
-
-
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        MainActivity.mCurrentFragment = resumer;
+    }
 }
 
 class Item
