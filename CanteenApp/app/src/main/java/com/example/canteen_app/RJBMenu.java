@@ -24,6 +24,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,7 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
+import com.google.firebase.auth.FirebaseAuth.AuthStateListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,9 +43,11 @@ import java.util.Map;
 import static android.content.ContentValues.TAG;
 
 
-public class RJBMenu extends Fragment implements View.OnClickListener {
+public class RJBMenu extends Fragment implements View.OnClickListener, AuthStateListener {
     public int k;
     private static int resumer = 2;
+    FirebaseUser user;
+    String uid;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,7 +59,47 @@ public class RJBMenu extends Fragment implements View.OnClickListener {
         //query code
         final ProgressBar pb = view.findViewById(R.id.pBar);
         pb.setVisibility(View.VISIBLE);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        System.out.println("REACHED");
+        FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                System.out.println("BOOOOOOOOM");
+                if(user!=null)
+                {
+                    // Sign in logic here.
+                    uid = "PLACEHOLDER";
+                    for (UserInfo profile : user.getProviderData())
+                    {
+                        uid = profile.getUid();
+                    }
+                    Toast toast = Toast.makeText(getActivity(),"UID is " + uid, Toast.LENGTH_LONG);
+                    toast.show();
+                    Map<String, Object> docData = new HashMap<>();
+                    docData.put("OrderState", "notCheckedOut");
+                    docData.put("uid", uid);
+                    Map<String, Object> nestedData = new HashMap<>();
+                    nestedData.put("Placeholder", "Ignore");
+                    docData.put("Items", nestedData);
+
+                    db.collection("RJB-orders").document(uid)
+                            .set(docData);
+
+
+                }
+
+
+            }
+        });
+
+
+
+
+
+
+
+
         db.collection("RJB-items")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -78,7 +123,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener {
                                 tv.setText(Integer.toString(i++));
                                 tv.setTextColor(Color.parseColor("#000000"));
                                 tv.setBackgroundColor(Color.parseColor("#ffffff"));
-                                tv.setId(i + 10*1);
+                                tv.setId(1 + 10*i);
                                 gl.addView(tv);
 
 
@@ -88,7 +133,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener {
                                 tv2.setText(name);
                                 tv2.setTextColor(Color.parseColor("#000000"));
                                 tv2.setBackgroundColor(Color.parseColor("#ffffff"));
-                                tv2.setId(i + 10*2);
+                                tv2.setId(2 + 10*i);
                                 gl.addView(tv2);
 
                                 //column3
@@ -97,7 +142,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener {
                                 tv3.setText("Rs. " + price);
                                 tv3.setTextColor(Color.parseColor("#000000"));
                                 tv3.setBackgroundColor(Color.parseColor("#ffffff"));
-                                tv3.setId(i + 10*3);
+                                tv3.setId(3 + 10*i);
                                 gl.addView(tv3);
 
                                 //column4
@@ -108,20 +153,25 @@ public class RJBMenu extends Fragment implements View.OnClickListener {
                                 else
                                     mb.setBackgroundColor(Color.parseColor("#696969"));
                                 mb.setText("ADD");
-                                mb.setId(i + 10*4);
+                                mb.setId(4 + 10*i);
 
-                                mb.setText("ADD");
-                                mb.setId(i + 10*4);
 
                                 gl.addView(mb);
+                                final Item_Quant iq = new Item_Quant();
+                                //ORDERING
                                 mb.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
+                                        iq.quant_incrementer();
                                         int id = v.getId();
-                                        Toast toast = Toast.makeText(getActivity(), "id is " + id, Toast.LENGTH_LONG);
+                                        Toast toast = Toast.makeText(getActivity(), "id is " + id + " Quant " + iq.quant, Toast.LENGTH_LONG);
                                         toast.show();
+
+
                                     }
                                 });
+                                //ENDOF ORDERING
+
                                 //end of adding
                             }
                             k = i;
@@ -135,6 +185,16 @@ public class RJBMenu extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        String uid = "PLACEHOLDER";
+        for (UserInfo profile : user.getProviderData())
+        {
+            uid = profile.getUid();
+        }
+        Toast toast = Toast.makeText(getActivity(),"UID is " + uid, Toast.LENGTH_LONG);
+        toast.show();
+    }
 
     public void onClick(View v)
     {
@@ -155,4 +215,21 @@ class Item
     public int Price, Quantity;
     public Boolean Availablity;
 
+}
+class Item_Quant
+{
+    int quant;
+    public void quant_incrementer()
+    {
+        quant++;
+    }
+}
+
+class order
+{
+    private String OrderState = "notCheckedOut";
+    class Items
+    {
+
+    }
 }
