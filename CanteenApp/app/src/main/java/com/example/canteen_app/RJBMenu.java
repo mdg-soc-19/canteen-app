@@ -111,10 +111,10 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Item item = document.toObject(Item.class);
-                                String name = item.Name;
-                                int price = item.Price;
-                                int qty = item.Quantity;
-                                boolean aty = item.Availablity;
+                                final String name = item.Name;
+                                final int price = item.Price;
+
+                                final boolean aty = item.Availablity;
 
                                 //adding to frag
                                 //column1
@@ -166,6 +166,20 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                         int id = v.getId();
                                         Toast toast = Toast.makeText(getActivity(), "id is " + id + " Quant " + iq.quant, Toast.LENGTH_LONG);
                                         toast.show();
+                                        Map<String, Object> item = new HashMap<>();
+                                        item.put("Name", name);
+                                        item.put("Price", price);
+                                        item.put("Quantity", iq.quant);
+
+                                        db.collection("RJB-orders").document(uid).collection(name).document(name)
+                                                .set(item)
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Toast toast = Toast.makeText(getActivity(), "Adding to cart failed", Toast.LENGTH_LONG);
+                                                        toast.show();
+                                                    }
+                                                });
 
 
                                     }
