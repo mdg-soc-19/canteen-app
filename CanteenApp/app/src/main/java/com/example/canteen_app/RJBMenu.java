@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,13 +45,14 @@ import java.util.Map;
 
 
 import static android.content.ContentValues.TAG;
+import static com.example.canteen_app.MainActivity.uid;
 
 
 public class RJBMenu extends Fragment implements View.OnClickListener, AuthStateListener {
     public int k;
     private static int resumer = 2;
     FirebaseUser user;
-    String uid;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,7 +87,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
 
 
                     db.collection("RJB-orders").document(uid)
-                            .set(docData, SetOptions.merge());
+                            .set(docData);
 
 
                 }
@@ -147,27 +149,43 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 gl.addView(tv3);
 
                                 //column4
+                                LinearLayout ll = new LinearLayout(getContext());
+                                ll.setOrientation(LinearLayout.HORIZONTAL);
+                                ll.setPadding(0,0,2,0);
+
+                                Button pb = new Button(getActivity().getApplicationContext());
+                                pb.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                if(aty)
+                                    pb.setBackgroundColor(Color.parseColor("#D81B60"));
+                                else
+                                    pb.setBackgroundColor(Color.parseColor("#696969"));
+                                pb.setText("ADD");
+
+
+
                                 Button mb = new Button(getActivity().getApplicationContext());
-                                mb.setWidth(100);
+                                mb.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                                 if(aty)
                                     mb.setBackgroundColor(Color.parseColor("#D81B60"));
                                 else
                                     mb.setBackgroundColor(Color.parseColor("#696969"));
-                                mb.setText("ADD");
-                                mb.setId(4 + 10*i);
+                                mb.setText("REMOVE");
+                                ll.addView(pb);
+                                ll.addView(mb);
+                                gl.addView(ll);
 
 
 
-                                gl.addView(mb);
+
                                 final Item_Quant iq = new Item_Quant();
                                 //ORDERING
                                 if(aty) {
-                                    mb.setOnClickListener(new View.OnClickListener() {
+                                    pb.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             iq.quant_incrementer();
                                             int id = v.getId();
-                                            Toast toast = Toast.makeText(getActivity(), "id is " + id + " Quant " + iq.quant, Toast.LENGTH_LONG);
+                                            Toast toast = Toast.makeText(getActivity(), "No. of " + name + " in cart:" + iq.quant, Toast.LENGTH_LONG);
                                             toast.show();
                                             Map<String, Object> item = new HashMap<>();
                                             item.put("Name", name);
@@ -191,6 +209,43 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
 
                                         }
                                     });
+
+
+                                    mb.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if(iq.quant!=0)
+                                            iq.quant_decrementer();
+                                            int id = v.getId();
+                                            Toast toast = Toast.makeText(getActivity(), "No. of " + name + " in cart:" + iq.quant, Toast.LENGTH_LONG);
+                                            toast.show();
+                                            Map<String, Object> item = new HashMap<>();
+                                            item.put("Name", name);
+                                            item.put("Price", price);
+                                            item.put("Quantity", iq.quant);
+                                            Map<String, Object> itemmap = new HashMap<>();
+                                            itemmap.put(name, item);
+                                            Map<String, Object> toplayer = new HashMap<>();
+                                            toplayer.put("Item", itemmap);
+
+                                            db.collection("RJB-orders").document(uid)
+                                                    .set(toplayer, SetOptions.merge())
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Toast toast = Toast.makeText(getActivity(), "Adding to cart failed", Toast.LENGTH_LONG);
+                                                            toast.show();
+                                                        }
+                                                    });
+
+
+                                        }
+                                    });
+
+
+
+
+
                                 }
                                 //ENDOF ORDERING
 
@@ -271,6 +326,7 @@ class Item_Quant
     {
         quant++;
     }
+    public void quant_decrementer() { quant--;}
 }
 
 class order
