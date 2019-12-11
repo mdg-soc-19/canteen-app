@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +36,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener;
+import com.google.firebase.firestore.SetOptions;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,12 +82,10 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                     Map<String, Object> docData = new HashMap<>();
                     docData.put("OrderState", "notCheckedOut");
                     docData.put("uid", uid);
-                    Map<String, Object> nestedData = new HashMap<>();
-                    nestedData.put("Placeholder", "Ignore");
-                    docData.put("Items", nestedData);
+
 
                     db.collection("RJB-orders").document(uid)
-                            .set(docData);
+                            .set(docData, SetOptions.merge());
 
 
                 }
@@ -156,34 +157,41 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 mb.setId(4 + 10*i);
 
 
+
                                 gl.addView(mb);
                                 final Item_Quant iq = new Item_Quant();
                                 //ORDERING
-                                mb.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        iq.quant_incrementer();
-                                        int id = v.getId();
-                                        Toast toast = Toast.makeText(getActivity(), "id is " + id + " Quant " + iq.quant, Toast.LENGTH_LONG);
-                                        toast.show();
-                                        Map<String, Object> item = new HashMap<>();
-                                        item.put("Name", name);
-                                        item.put("Price", price);
-                                        item.put("Quantity", iq.quant);
+                                if(aty) {
+                                    mb.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            iq.quant_incrementer();
+                                            int id = v.getId();
+                                            Toast toast = Toast.makeText(getActivity(), "id is " + id + " Quant " + iq.quant, Toast.LENGTH_LONG);
+                                            toast.show();
+                                            Map<String, Object> item = new HashMap<>();
+                                            item.put("Name", name);
+                                            item.put("Price", price);
+                                            item.put("Quantity", iq.quant);
+                                            Map<String, Object> itemmap = new HashMap<>();
+                                            itemmap.put(name, item);
+                                            Map<String, Object> toplayer = new HashMap<>();
+                                            toplayer.put("Item", itemmap);
 
-                                        db.collection("RJB-orders").document(uid).collection(name).document(name)
-                                                .set(item)
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Toast toast = Toast.makeText(getActivity(), "Adding to cart failed", Toast.LENGTH_LONG);
-                                                        toast.show();
-                                                    }
-                                                });
+                                            db.collection("RJB-orders").document(uid)
+                                                    .set(toplayer, SetOptions.merge())
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Toast toast = Toast.makeText(getActivity(), "Adding to cart failed", Toast.LENGTH_LONG);
+                                                            toast.show();
+                                                        }
+                                                    });
 
 
-                                    }
-                                });
+                                        }
+                                    });
+                                }
                                 //ENDOF ORDERING
 
                                 //end of adding
@@ -194,6 +202,32 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                         }
                     }
                 });
+
+        Button back = view.findViewById(R.id.backb);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new homePageFrag());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+            }
+        });
+        Button checko = view.findViewById(R.id.checkb);
+        checko.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new CheckoutFrag());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+            }
+        });
+
 
 
         return view;
