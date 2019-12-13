@@ -15,6 +15,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class MainActivity extends AppCompatActivity  {
@@ -23,6 +25,14 @@ public class MainActivity extends AppCompatActivity  {
     static int mCurrentFragment;
     static int mDefaultFragment = 1;
     static GoogleSignInClient mGoogleSignInClient;
+    static String uid;
+    static String Bhawan;
+
+
+    // [START declare_auth]
+    private FirebaseAuth mAuth;
+    // [END declare_auth]
+
     public void onCreate(Bundle savedInstanceState)
     {
         getSupportActionBar().hide();
@@ -32,11 +42,17 @@ public class MainActivity extends AppCompatActivity  {
         setTheme(R.style.CanteenAppTheme);
         //authcode
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        // [START initialize_auth]
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        // [END initialize_auth]
 
         //authcode
 
@@ -51,9 +67,9 @@ public class MainActivity extends AppCompatActivity  {
     protected void onStart() {
         getSupportActionBar().hide();
         super.onStart();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        updateUI(account);
 
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
     }
 
     @Override
@@ -62,7 +78,7 @@ public class MainActivity extends AppCompatActivity  {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    public void updateUI(GoogleSignInAccount account)
+    public void updateUI(FirebaseUser account)
     {
         if(account==null)
         {
@@ -92,6 +108,15 @@ public class MainActivity extends AppCompatActivity  {
                     // or ft.add(R.id.your_placeholder, new FooFragment());
                     // Complete the changes added above
                     ft.commit();
+                    break;
+                case 3:
+                    ft = getSupportFragmentManager().beginTransaction();
+                    // Replace the contents of the container with the new fragment
+                    ft.replace(R.id.your_placeholder, new CheckoutFrag());
+                    // or ft.add(R.id.your_placeholder, new FooFragment());
+                    // Complete the changes added above
+                    ft.commit();
+
 
             }
 

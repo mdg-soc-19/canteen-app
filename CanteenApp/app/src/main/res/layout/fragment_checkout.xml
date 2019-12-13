@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CheckoutFrag">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="0dp">
+        <ProgressBar
+            android:id="@+id/pBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textAlignment="center"
+            android:elevation="0dp"
+            android:outlineAmbientShadowColor="#000000"
+            android:background="#ffffff"
+            android:layout_marginTop="0dp"
+            >
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/iconfinal"
+                android:id="@+id/iconhome"
+                android:gravity="center_vertical"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="5dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="-69dp"
+                android:layout_toEndOf="@+id/iconhome"
+                android:fontFamily="@assets/RobotoMedium"
+                android:gravity="center_vertical"
+                android:text="CHAAPO-NATOR"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="28sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/usernamedisplay"
+                android:layout_alignParentRight="true"
+                />
+        </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your Order"
+            android:fontFamily="@assets/RobotoMedium"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:background="#ffffff"
+            android:textSize="28sp"/>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="#ffffff"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#ffffff">
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="3"
+                    android:padding="5dp"
+                    android:id="@+id/GridCheckout"
+                    android:background="#ffffff"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000000"
+                        android:background="#ffffff"
+                        android:text="Sr no."
+                        android:fontFamily="sans-serif-medium"/>
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000000"
+                        android:text="Name"
+                        android:background="#ffffff"
+                        android:fontFamily="sans-serif-medium"/>
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000000"
+                        android:text="Price"
+                        android:background="#ffffff"
+                        android:fontFamily="sans-serif-medium"/>
+
+
+
+
+                </GridLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="205dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/TotalAmount"
+                        android:background="#ffffff"
+                        android:textColor="#000000"
+                        android:text="000"
+                        android:textAlignment="center"
+
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_alignParentEnd="true" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:layout_alignLeft="@+id/TotalAmount"
+                        android:text="Total = "
+                        android:textColor="#000000"
+                        android:fontFamily="sans-serif-medium"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+
+
+
+
+
+        </com.google.android.material.card.MaterialCardView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            >
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Place Order"
+                android:id="@+id/placebu"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
+
+
+
+    </LinearLayout>
+
+</FrameLayout>
