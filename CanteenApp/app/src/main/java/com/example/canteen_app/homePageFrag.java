@@ -39,19 +39,79 @@ public class homePageFrag extends Fragment
         ImageView rajiv = view.findViewById(R.id.rajivg);
         rajiv.setImageResource(R.drawable.rajivliner);
 
-        //listener for RJB
+        //listener - list
         MaterialCardView RJBCard = view.findViewById(R.id.RJB);
         RJBCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
+                MainActivity.Bhawan = "RJB";
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     // Replace the contents of the container with the new fragment
                     ft.replace(R.id.your_placeholder, new RJBMenu());
                     // or ft.add(R.id.your_placeholder, new FooFragment());
                     // Complete the changes added above
                     ft.commit();
+
+            }
+        });
+        MaterialCardView RavindraCard = view.findViewById(R.id.Ravindra);
+        RavindraCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                MainActivity.Bhawan = "Ravindra";
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new RJBMenu());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+
+            }
+        });
+        MaterialCardView RKBCard = view.findViewById(R.id.RKB);
+        RKBCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                MainActivity.Bhawan = "RKB";
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new RJBMenu());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+
+            }
+        });
+        MaterialCardView CautleyCard = view.findViewById(R.id.cautleycanteen);
+        CautleyCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                MainActivity.Bhawan = "cautley";
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new RJBMenu());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+
+            }
+        });
+        MaterialCardView SarojiniCard = view.findViewById(R.id.sarojini);
+        SarojiniCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                MainActivity.Bhawan = "sarojini";
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new RJBMenu());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
 
             }
         });

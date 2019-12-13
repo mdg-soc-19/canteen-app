@@ -45,6 +45,7 @@ import java.util.Map;
 
 
 import static android.content.ContentValues.TAG;
+import static com.example.canteen_app.MainActivity.Bhawan;
 import static com.example.canteen_app.MainActivity.uid;
 
 
@@ -59,6 +60,8 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
 
         View view = inflater.inflate(R.layout.fragment_rjbmenu, container, false);
         // Inflate the layout for this fragment
+
+
         final GridLayout gl = view.findViewById(R.id.grid);
         final Context thiscontext = this.getActivity();
         //query code
@@ -86,7 +89,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                     docData.put("uid", uid);
 
 
-                    db.collection("RJB-orders").document(uid)
+                    db.collection(Bhawan + "-orders").document(uid)
                             .set(docData);
 
 
@@ -103,7 +106,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
 
 
 
-        db.collection("RJB-items")
+        db.collection(Bhawan + "-items")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -196,7 +199,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                             Map<String, Object> toplayer = new HashMap<>();
                                             toplayer.put("Item", itemmap);
 
-                                            db.collection("RJB-orders").document(uid)
+                                            db.collection(Bhawan + "-orders").document(uid)
                                                     .set(toplayer, SetOptions.merge())
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
@@ -228,7 +231,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                             Map<String, Object> toplayer = new HashMap<>();
                                             toplayer.put("Item", itemmap);
 
-                                            db.collection("RJB-orders").document(uid)
+                                            db.collection(Bhawan + "-orders").document(uid)
                                                     .set(toplayer, SetOptions.merge())
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override

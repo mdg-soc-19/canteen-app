@@ -101,6 +101,7 @@
                 android:outlineAmbientShadowColor="#000000"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
+                android:id="@+id/Ravindra"
                 >
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -129,6 +130,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="20dp"
+                android:id="@+id/RKB"
                 >
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -157,6 +159,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="20dp"
+                android:id="@+id/cautleycanteen"
                 >
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -185,6 +188,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="20dp"
+                android:id="@+id/sarojini"
                 >
                 <LinearLayout
                     android:layout_width="match_parent"

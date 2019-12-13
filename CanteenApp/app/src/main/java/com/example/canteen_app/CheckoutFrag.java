@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,12 +33,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.content.ContentValues.TAG;
+import static com.example.canteen_app.MainActivity.Bhawan;
 import static com.example.canteen_app.MainActivity.uid;
 
 
 public class CheckoutFrag extends Fragment {
 
-
+    private static int resumer = 3;
     public CheckoutFrag() {
         // Required empty public constructor
     }
@@ -56,15 +58,18 @@ public class CheckoutFrag extends Fragment {
 
 
         final View view = inflater.inflate(R.layout.fragment_checkout, container, false);
+        final ProgressBar pb = view.findViewById(R.id.pBar);
+        pb.setVisibility(View.VISIBLE);
         final GridLayout gl = view.findViewById(R.id.GridCheckout);
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("RJB-orders").document(uid)
+        db.collection(Bhawan + "-orders").document(uid)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful())
                         {
+                            pb.setVisibility(View.GONE);
                             DocumentSnapshot document = task.getResult();
                             System.out.println(document.getData());
                             Map<String, Object> Items =  new HashMap<>();
@@ -137,7 +142,7 @@ public class CheckoutFrag extends Fragment {
             public void onClick(View v) {
             Map<String, Object> OrderData = new HashMap<>();
             OrderData.put("OrderState", "Placed");
-            db.collection("RJB-orders").document(uid).set(OrderData, SetOptions.merge());
+            db.collection(Bhawan + "-orders").document(uid).set(OrderData, SetOptions.merge());
             Place.setText("Order Placed");
             Place.setBackgroundColor(Color.parseColor("#63EC27"));
 
@@ -145,6 +150,11 @@ public class CheckoutFrag extends Fragment {
         });
 
         return view;
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        MainActivity.mCurrentFragment = resumer;
     }
 
 

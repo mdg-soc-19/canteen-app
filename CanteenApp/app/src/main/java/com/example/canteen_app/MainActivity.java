@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity  {
     static int mDefaultFragment = 1;
     static GoogleSignInClient mGoogleSignInClient;
     static String uid;
+    static String Bhawan;
 
 
     // [START declare_auth]
@@ -107,6 +108,15 @@ public class MainActivity extends AppCompatActivity  {
                     // or ft.add(R.id.your_placeholder, new FooFragment());
                     // Complete the changes added above
                     ft.commit();
+                    break;
+                case 3:
+                    ft = getSupportFragmentManager().beginTransaction();
+                    // Replace the contents of the container with the new fragment
+                    ft.replace(R.id.your_placeholder, new CheckoutFrag());
+                    // or ft.add(R.id.your_placeholder, new FooFragment());
+                    // Complete the changes added above
+                    ft.commit();
+
 
             }
 
