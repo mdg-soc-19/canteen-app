@@ -26,9 +26,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -36,8 +33,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+<<<<<<< HEAD
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener;
 import com.google.firebase.firestore.SetOptions;
+=======
+>>>>>>> parent of cd98f18... Commit - chenges in auth
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,11 +49,14 @@ import static com.example.canteen_app.MainActivity.Bhawan;
 import static com.example.canteen_app.MainActivity.uid;
 
 
-public class RJBMenu extends Fragment implements View.OnClickListener, AuthStateListener {
+public class RJBMenu extends Fragment implements View.OnClickListener {
     public int k;
     private static int resumer = 2;
+<<<<<<< HEAD
     FirebaseUser user;
 
+=======
+>>>>>>> parent of cd98f18... Commit - chenges in auth
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,6 +70,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
         //query code
         final ProgressBar pb = view.findViewById(R.id.pBar);
         pb.setVisibility(View.VISIBLE);
+<<<<<<< HEAD
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         System.out.println("REACHED");
         FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
@@ -107,6 +111,10 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
 
 
         db.collection(Bhawan + "-items")
+=======
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("RJB-items")
+>>>>>>> parent of cd98f18... Commit - chenges in auth
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -129,7 +137,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 tv.setText(Integer.toString(i++));
                                 tv.setTextColor(Color.parseColor("#000000"));
                                 tv.setBackgroundColor(Color.parseColor("#ffffff"));
-                                tv.setId(1 + 10*i);
+                                tv.setId(i + 10*1);
                                 gl.addView(tv);
 
 
@@ -139,7 +147,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 tv2.setText(name);
                                 tv2.setTextColor(Color.parseColor("#000000"));
                                 tv2.setBackgroundColor(Color.parseColor("#ffffff"));
-                                tv2.setId(2 + 10*i);
+                                tv2.setId(i + 10*2);
                                 gl.addView(tv2);
 
                                 //column3
@@ -148,7 +156,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 tv3.setText("Rs. " + price);
                                 tv3.setTextColor(Color.parseColor("#000000"));
                                 tv3.setBackgroundColor(Color.parseColor("#ffffff"));
-                                tv3.setId(3 + 10*i);
+                                tv3.setId(i + 10*3);
                                 gl.addView(tv3);
 
                                 //column4
@@ -172,12 +180,20 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                     mb.setBackgroundColor(Color.parseColor("#D81B60"));
                                 else
                                     mb.setBackgroundColor(Color.parseColor("#696969"));
+<<<<<<< HEAD
                                 mb.setText("REMOVE");
                                 ll.addView(pb);
                                 ll.addView(mb);
                                 gl.addView(ll);
+=======
+                                mb.setText("ADD");
+                                mb.setId(i + 10*4);
+>>>>>>> parent of cd98f18... Commit - chenges in auth
 
+                                mb.setText("ADD");
+                                mb.setId(i + 10*4);
 
+<<<<<<< HEAD
 
 
                                 final Item_Quant iq = new Item_Quant();
@@ -252,6 +268,17 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 }
                                 //ENDOF ORDERING
 
+=======
+                                gl.addView(mb);
+                                mb.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        int id = v.getId();
+                                        Toast toast = Toast.makeText(getActivity(), "id is " + id, Toast.LENGTH_LONG);
+                                        toast.show();
+                                    }
+                                });
+>>>>>>> parent of cd98f18... Commit - chenges in auth
                                 //end of adding
                             }
                             k = i;
@@ -291,16 +318,6 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
         return view;
     }
 
-    @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        String uid = "PLACEHOLDER";
-        for (UserInfo profile : user.getProviderData())
-        {
-            uid = profile.getUid();
-        }
-        Toast toast = Toast.makeText(getActivity(),"UID is " + uid, Toast.LENGTH_LONG);
-        toast.show();
-    }
 
     public void onClick(View v)
     {
@@ -322,6 +339,7 @@ class Item
     public Boolean Availablity;
 
 }
+<<<<<<< HEAD
 class Item_Quant
 {
     int quant;
@@ -340,3 +358,5 @@ class order
 
     }
 }
+=======
+>>>>>>> parent of cd98f18... Commit - chenges in auth
