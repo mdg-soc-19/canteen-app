@@ -2,11 +2,10 @@ package com.example.canteen_app;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -23,17 +22,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener;
@@ -53,6 +47,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
     public int k;
     private static int resumer = 2;
     FirebaseUser user;
+    boolean checkoutpossible = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,7 +123,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 tv.setWidth(50);
                                 tv.setText(Integer.toString(i++));
                                 tv.setTextColor(Color.parseColor("#000000"));
-                                tv.setBackgroundColor(Color.parseColor("#ffffff"));
+                                //tv.setBackgroundColor(Color.parseColor("#ffffff"));
                                 tv.setId(1 + 10*i);
                                 gl.addView(tv);
 
@@ -138,7 +133,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 tv2.setWidth(200);
                                 tv2.setText(name);
                                 tv2.setTextColor(Color.parseColor("#000000"));
-                                tv2.setBackgroundColor(Color.parseColor("#ffffff"));
+                                //tv2.setBackgroundColor(Color.parseColor("#ffffff"));
                                 tv2.setId(2 + 10*i);
                                 gl.addView(tv2);
 
@@ -147,7 +142,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 tv3.setWidth(100);
                                 tv3.setText("Rs. " + price);
                                 tv3.setTextColor(Color.parseColor("#000000"));
-                                tv3.setBackgroundColor(Color.parseColor("#ffffff"));
+                                //tv3.setBackgroundColor(Color.parseColor("#ffffff"));
                                 tv3.setId(3 + 10*i);
                                 gl.addView(tv3);
 
@@ -156,23 +151,42 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 ll.setOrientation(LinearLayout.HORIZONTAL);
                                 ll.setPadding(0,0,2,0);
 
-                                Button pb = new Button(getActivity().getApplicationContext());
-                                pb.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                MaterialButton pb = new MaterialButton(getActivity(), null, R.attr.borderlessButtonStyle);
+
                                 if(aty)
                                     pb.setBackgroundColor(Color.parseColor("#D81B60"));
                                 else
                                     pb.setBackgroundColor(Color.parseColor("#696969"));
-                                pb.setText("ADD");
+                                pb.setText("+");
+
+                                pb.setTextColor(Color.parseColor("#000000"));
 
 
 
-                                Button mb = new Button(getActivity().getApplicationContext());
-                                mb.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                System.out.println("View grp layout is " + ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);
+                                params.setMargins(0, 0, 10, 10);
+                                pb.setLayoutParams(params);
+
+
+
+
+                                MaterialButton mb = new MaterialButton(getActivity(), null, R.attr.borderlessButtonStyle);
+                                //Button mb = new Button(getActivity().getApplicationContext());
+
                                 if(aty)
                                     mb.setBackgroundColor(Color.parseColor("#D81B60"));
                                 else
                                     mb.setBackgroundColor(Color.parseColor("#696969"));
-                                mb.setText("REMOVE");
+                                mb.setText("-");
+                                mb.setTextColor(Color.parseColor("#000000"));
+                                mb.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+                                int t = ViewGroup.LayoutParams.WRAP_CONTENT;
+                                mb.setLayoutParams(new LinearLayout.LayoutParams(150, 200));
+
+
+
                                 ll.addView(pb);
                                 ll.addView(mb);
                                 gl.addView(ll);
@@ -188,6 +202,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                         public void onClick(View v) {
                                             iq.quant_incrementer();
                                             int id = v.getId();
+                                            checkoutpossible = true;
                                             Toast toast = Toast.makeText(getActivity(), "No. of " + name + " in cart:" + iq.quant, Toast.LENGTH_LONG);
                                             toast.show();
                                             Map<String, Object> item = new HashMap<>();
@@ -218,7 +233,11 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                         @Override
                                         public void onClick(View v) {
                                             if(iq.quant!=0)
-                                            iq.quant_decrementer();
+                                                iq.quant_decrementer();
+
+                                            if(iq.quant==0)
+                                                checkoutpossible=false;
+
                                             int id = v.getId();
                                             Toast toast = Toast.makeText(getActivity(), "No. of " + name + " in cart:" + iq.quant, Toast.LENGTH_LONG);
                                             toast.show();
@@ -277,12 +296,22 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
         checko.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                // Replace the contents of the container with the new fragment
-                ft.replace(R.id.your_placeholder, new CheckoutFrag());
-                // or ft.add(R.id.your_placeholder, new FooFragment());
-                // Complete the changes added above
-                ft.commit();
+
+                if(checkoutpossible)
+                {
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    // Replace the contents of the container with the new fragment
+                    ft.replace(R.id.your_placeholder, new CheckoutFrag());
+                    // or ft.add(R.id.your_placeholder, new FooFragment());
+                    // Complete the changes added above
+                    ft.commit();
+                }
+                else
+                {
+                    Toast toast = Toast.makeText(getActivity(), "Please place something into the cart before checking out.", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+
             }
         });
 

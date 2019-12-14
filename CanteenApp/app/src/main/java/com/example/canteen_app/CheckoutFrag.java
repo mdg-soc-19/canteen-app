@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -58,6 +59,8 @@ public class CheckoutFrag extends Fragment {
 
 
         final View view = inflater.inflate(R.layout.fragment_checkout, container, false);
+        final Button Place = view.findViewById(R.id.placebu);
+        //placebu - placebo!!! Geddit? No? Okay...
         final ProgressBar pb = view.findViewById(R.id.pBar);
         pb.setVisibility(View.VISIBLE);
         final GridLayout gl = view.findViewById(R.id.GridCheckout);
@@ -77,11 +80,18 @@ public class CheckoutFrag extends Fragment {
                             System.out.println("ITEMS : " + Items);
                             Map<String, Object> itemlist = (Map)(Items.get("Item"));
 
-                            System.out.println("REACHED");
+                            String orderState = (String)document.get("OrderState");
+                            System.out.println(orderState);
+                            if(orderState.equals("Placed"))
+                            {
+                                Place.setText("Order Placed");
+                                Place.setBackgroundColor(Color.parseColor("#63EC27"));
+                            }
                             int i = 1;
                             int total = 0;
                             for (Map.Entry<String, Object> entry : itemlist.entrySet())
                             {
+
                                 System.out.println("Value is " + entry.getValue());
                                 Map<String, Map<String, Object>> orderItem = new HashMap<>();
                                 orderItem.put(entry.getKey(), (Map)entry.getValue());
@@ -134,8 +144,9 @@ public class CheckoutFrag extends Fragment {
                         }
                     }
                 });
-        final Button Place = view.findViewById(R.id.placebu);
-        //placebu - placebo!!! Geddit? No? Okay...
+
+
+
 
         Place.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +156,6 @@ public class CheckoutFrag extends Fragment {
             db.collection(Bhawan + "-orders").document(uid).set(OrderData, SetOptions.merge());
             Place.setText("Order Placed");
             Place.setBackgroundColor(Color.parseColor("#63EC27"));
-
             }
         });
 

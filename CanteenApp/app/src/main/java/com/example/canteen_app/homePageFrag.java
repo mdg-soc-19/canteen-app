@@ -1,10 +1,12 @@
 package com.example.canteen_app;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
@@ -38,6 +41,11 @@ public class homePageFrag extends Fragment
         sarojini.setImageResource(R.drawable.sarojioniliner);
         ImageView rajiv = view.findViewById(R.id.rajivg);
         rajiv.setImageResource(R.drawable.rajivliner);
+
+
+
+
+
 
         //listener - list
         MaterialCardView RJBCard = view.findViewById(R.id.RJB);
