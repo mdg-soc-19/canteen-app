@@ -118,32 +118,37 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 final boolean aty = item.Availablity;
 
                                 //adding to frag
+                                LinearLayout.LayoutParams paramstv = new LinearLayout.LayoutParams(-2, -2);
+                                paramstv.setMargins(0, 0, 20, 0);
                                 //column1
                                 TextView tv = new TextView(getActivity().getApplicationContext());
-                                tv.setWidth(50);
+
                                 tv.setText(Integer.toString(i++));
                                 tv.setTextColor(Color.parseColor("#000000"));
                                 //tv.setBackgroundColor(Color.parseColor("#ffffff"));
                                 tv.setId(1 + 10*i);
+                                tv.setLayoutParams(paramstv);
                                 gl.addView(tv);
 
 
                                 //column2
                                 TextView tv2 = new TextView(getActivity().getApplicationContext());
-                                tv2.setWidth(200);
+
                                 tv2.setText(name);
                                 tv2.setTextColor(Color.parseColor("#000000"));
                                 //tv2.setBackgroundColor(Color.parseColor("#ffffff"));
                                 tv2.setId(2 + 10*i);
+                                tv2.setLayoutParams(paramstv);
                                 gl.addView(tv2);
 
                                 //column3
                                 TextView tv3 = new TextView(getActivity().getApplicationContext());
-                                tv3.setWidth(100);
+
                                 tv3.setText("Rs. " + price);
                                 tv3.setTextColor(Color.parseColor("#000000"));
                                 //tv3.setBackgroundColor(Color.parseColor("#ffffff"));
                                 tv3.setId(3 + 10*i);
+                                tv3.setLayoutParams(paramstv);
                                 gl.addView(tv3);
 
                                 //column4
@@ -165,7 +170,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
 
                                 System.out.println("View grp layout is " + ViewGroup.LayoutParams.WRAP_CONTENT);
 
-                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 200);
+                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(120, 120);
                                 params.setMargins(0, 0, 10, 10);
                                 pb.setLayoutParams(params);
 
@@ -183,7 +188,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 mb.setTextColor(Color.parseColor("#000000"));
                                 mb.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
                                 int t = ViewGroup.LayoutParams.WRAP_CONTENT;
-                                mb.setLayoutParams(new LinearLayout.LayoutParams(150, 200));
+                                mb.setLayoutParams(new LinearLayout.LayoutParams(120, 120));
 
 
 

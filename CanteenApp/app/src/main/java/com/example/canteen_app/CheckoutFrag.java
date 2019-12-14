@@ -151,11 +151,11 @@ public class CheckoutFrag extends Fragment {
         Place.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Map<String, Object> OrderData = new HashMap<>();
-            OrderData.put("OrderState", "Placed");
-            db.collection(Bhawan + "-orders").document(uid).set(OrderData, SetOptions.merge());
-            Place.setText("Order Placed");
-            Place.setBackgroundColor(Color.parseColor("#63EC27"));
+                Map<String, Object> OrderData = new HashMap<>();
+                OrderData.put("OrderState", "Placed");
+                db.collection(Bhawan + "-orders").document(uid).set(OrderData, SetOptions.merge());
+                Place.setText("Order Placed");
+                Place.setBackgroundColor(Color.parseColor("#63EC27"));
             }
         });
 
@@ -169,9 +169,3 @@ public class CheckoutFrag extends Fragment {
 
 
 }
-
-
-
-
-
-

@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/usernamedisplay"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 />
         </RelativeLayout>
         <TextView
@@ -80,7 +80,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="#ffffff">
-
                 <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -111,11 +110,8 @@
                         android:text="Price"
                         android:background="#ffffff"
                         android:fontFamily="sans-serif-medium"/>
-
-
-
-
                 </GridLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -143,13 +139,6 @@
                 </RelativeLayout>
 
             </LinearLayout>
-
-
-
-
-
-
-
         </com.google.android.material.card.MaterialCardView>
         <RelativeLayout
             android:layout_width="match_parent"
