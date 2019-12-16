@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +33,8 @@ import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 import static android.content.ContentValues.TAG;
 import static com.example.canteen_app.MainActivity.Bhawan;
@@ -65,6 +68,7 @@ public class CheckoutFrag extends Fragment {
         pb.setVisibility(View.VISIBLE);
         final GridLayout gl = view.findViewById(R.id.GridCheckout);
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         db.collection(Bhawan + "-orders").document(uid)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -74,6 +78,7 @@ public class CheckoutFrag extends Fragment {
                         {
                             pb.setVisibility(View.GONE);
                             DocumentSnapshot document = task.getResult();
+
                             System.out.println(document.getData());
                             Map<String, Object> Items =  new HashMap<>();
                             Items.put("Item", document.get("Item"));
@@ -156,6 +161,42 @@ public class CheckoutFrag extends Fragment {
                 db.collection(Bhawan + "-orders").document(uid).set(OrderData, SetOptions.merge());
                 Place.setText("Order Placed");
                 Place.setBackgroundColor(Color.parseColor("#63EC27"));
+                db.collection(Bhawan + "-orders").document(uid)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful())
+                                {
+                                    DocumentSnapshot document = task.getResult();
+
+
+                                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                                    LocalDateTime now = LocalDateTime.now();
+                                    Map<String, Object> tempDoc = document.getData();
+                                    tempDoc.put("Date", dtf.format(now));
+                                    db.collection(Bhawan + "-orders")
+                                            .add(tempDoc);
+                                    //Bhawan orders doesnt need bhawan name.
+                                    tempDoc.put("Bhawan", Bhawan);
+                                    db.collection("users").document("usersdoc").collection(uid)
+                                            .add(tempDoc);
+                                    db.collection(Bhawan + "-orders").document(uid).delete();
+
+                                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                    // Replace the contents of the container with the new fragment
+                                    ft.replace(R.id.your_placeholder, new OrderHistoryFrag());
+                                    // or ft.add(R.id.your_placeholder, new FooFragment());
+                                    // Complete the changes added above
+                                    ft.commit();
+
+
+                                }
+                                else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
             }
         });
 

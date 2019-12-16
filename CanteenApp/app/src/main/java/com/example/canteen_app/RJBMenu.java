@@ -27,6 +27,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -85,7 +86,7 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
 
 
                     db.collection(Bhawan + "-orders").document(uid)
-                            .set(docData);
+                            .set(docData, SetOptions.merge());
 
 
                 }
@@ -139,6 +140,8 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 //tv2.setBackgroundColor(Color.parseColor("#ffffff"));
                                 tv2.setId(2 + 10*i);
                                 tv2.setLayoutParams(paramstv);
+                                tv2.setMaxWidth(150);
+                                tv2.setSingleLine(false);
                                 gl.addView(tv2);
 
                                 //column3
@@ -170,9 +173,11 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
 
                                 System.out.println("View grp layout is " + ViewGroup.LayoutParams.WRAP_CONTENT);
 
-                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(120, 120);
-                                params.setMargins(0, 0, 10, 10);
-                                pb.setLayoutParams(params);
+                                //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(120, 120);
+                                //params.setMargins(0, 0, 10, 10);
+                                pb.setMinWidth(1);
+                                pb.setWidth(-2);
+                                pb.setHeight(-2);
 
 
 
@@ -188,7 +193,8 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 mb.setTextColor(Color.parseColor("#000000"));
                                 mb.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
                                 int t = ViewGroup.LayoutParams.WRAP_CONTENT;
-                                mb.setLayoutParams(new LinearLayout.LayoutParams(120, 120));
+                                mb.setMinWidth(1);
+                                mb.setLayoutParams(paramstv);
 
 
 
@@ -200,6 +206,40 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
 
 
                                 final Item_Quant iq = new Item_Quant();
+
+                                db.collection(Bhawan + "-orders").document(uid)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful())
+                                                {
+                                                    DocumentSnapshot document = task.getResult();
+                                                    Map<String, Object> tempMap= (Map)document.get("Item");
+                                                    if(tempMap !=null)
+                                                    {
+                                                        Map<String, Object> tempMap1 = (Map)tempMap.get(name);
+                                                        if(tempMap1!=null)
+                                                        {
+                                                            Long quant = (Long) tempMap1.get("Quantity");
+                                                            iq.quant = quant.intValue();
+                                                            if(quant!=0)
+                                                            {
+                                                                checkoutpossible = true;
+                                                            }
+
+                                                        }
+                                                    }
+
+
+
+                                                }
+                                                else {
+                                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                                }
+                                            }
+                                        });
+
                                 //ORDERING
                                 if(aty) {
                                     pb.setOnClickListener(new View.OnClickListener() {

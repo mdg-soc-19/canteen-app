@@ -12,15 +12,7 @@
         android:orientation="vertical"
         android:background="@color/colorPrimaryDark">
 
-        <ProgressBar
-            android:id="@+id/pBar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
 
-            android:layout_gravity="center"
-            android:visibility="gone"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -84,6 +76,15 @@
                 android:background="#D81B60"/>
 
         </RelativeLayout>
+        <ProgressBar
+            android:id="@+id/pBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+
+            android:layout_gravity="center"
+            android:visibility="gone"/>
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

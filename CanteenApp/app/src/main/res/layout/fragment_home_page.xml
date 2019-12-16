@@ -49,12 +49,21 @@
                 android:layout_alignParentRight="true"
                 />
         </RelativeLayout>
-        <SearchView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:background="@color/colorAccent"
             android:elevation="8dp"
-            android:outlineAmbientShadowColor="#000000"/>
+            android:outlineAmbientShadowColor="#000000">
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Order History"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/Orderhist"
+                android:layout_margin="10dp"
+                />
+        </RelativeLayout>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
