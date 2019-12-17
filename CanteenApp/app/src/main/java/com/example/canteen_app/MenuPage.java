@@ -1,5 +1,6 @@
 package com.example.canteen_app;
 
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -56,6 +58,15 @@ public class MenuPage extends Fragment {
         final ProgressBar pb = view.findViewById(R.id.pBar);
         pb.setVisibility(View.VISIBLE);
         frag = this;
+
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("OrderState", "notCheckedOut");
+        docData.put("uid", uid);
+
+
+        db.collection(Bhawan + "-orders").document(uid)
+                .set(docData, SetOptions.merge());
+
 
         mViewModel = ViewModelProviders.of(this).get(MenuPageViewModel.class);
         // Create the observer which updates the UI.
@@ -311,6 +322,40 @@ public class MenuPage extends Fragment {
 
 
 
+        Button back = view.findViewById(R.id.backb);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new homePageFrag());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+            }
+        });
+        Button checko = view.findViewById(R.id.checkb);
+        checko.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(checkoutpossible)
+                {
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    // Replace the contents of the container with the new fragment
+                    ft.replace(R.id.your_placeholder, new CheckoutFrag());
+                    // or ft.add(R.id.your_placeholder, new FooFragment());
+                    // Complete the changes added above
+                    ft.commit();
+                }
+                else
+                {
+                    Toast toast = Toast.makeText(getActivity(), "Please place something into the cart before checking out.", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+
+            }
+        });
 
 
 
