@@ -399,7 +399,7 @@ class Item
     public Boolean Availablity;
 
 }
-class Item_Quant
+/*class Item_Quant
 {
     int quant;
     public void quant_incrementer()
@@ -407,7 +407,7 @@ class Item_Quant
         quant++;
     }
     public void quant_decrementer() { quant--;}
-}
+}*/
 
 class order
 {

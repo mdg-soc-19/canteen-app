@@ -10,7 +10,7 @@
         android:roundIcon="@drawable/launchericon"
         android:supportsRtl="true"
         android:theme="@style/CanteenAppTheme">
-        <activity android:name=".temp"></activity>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

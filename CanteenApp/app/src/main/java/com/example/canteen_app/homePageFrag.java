@@ -57,7 +57,7 @@ public class homePageFrag extends Fragment
                 MainActivity.Bhawan = "RJB";
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     // Replace the contents of the container with the new fragment
-                    ft.replace(R.id.your_placeholder, new RJBMenu());
+                    ft.replace(R.id.your_placeholder, new MenuPage());
                     // or ft.add(R.id.your_placeholder, new FooFragment());
                     // Complete the changes added above
                     ft.commit();
