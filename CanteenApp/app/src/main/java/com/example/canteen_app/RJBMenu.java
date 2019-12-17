@@ -175,9 +175,10 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
 
                                 //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(120, 120);
                                 //params.setMargins(0, 0, 10, 10);
-                                pb.setMinWidth(1);
-                                pb.setWidth(-2);
-                                pb.setHeight(-2);
+                                pb.setMinWidth(80);
+                                pb.setMinimumWidth(80);
+
+                                pb.setLayoutParams(paramstv);
 
 
 
@@ -193,7 +194,9 @@ public class RJBMenu extends Fragment implements View.OnClickListener, AuthState
                                 mb.setTextColor(Color.parseColor("#000000"));
                                 mb.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
                                 int t = ViewGroup.LayoutParams.WRAP_CONTENT;
-                                mb.setMinWidth(1);
+                                mb.setMinWidth(80);
+                                mb.setMinimumWidth(80);
+
                                 mb.setLayoutParams(paramstv);
 
 
