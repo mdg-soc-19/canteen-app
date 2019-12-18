@@ -27,7 +27,7 @@ import static com.example.canteen_app.MainActivity.Bhawan;
 
 public class DatabaseHandlerForRJBMenu {
 
-    public static Map<String, Object> initialize()
+    public static void initialize()
     {
         final Map<String, Object> Bhawanitems = new HashMap<>();
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -67,7 +67,7 @@ public class DatabaseHandlerForRJBMenu {
                 });
 
 
-        return Bhawanitems;
+      return;
     }
 }
 

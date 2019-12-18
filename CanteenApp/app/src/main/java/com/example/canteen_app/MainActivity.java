@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity  {
     static int mCurrentFragment;
     static int mDefaultFragment = 1;
     static GoogleSignInClient mGoogleSignInClient;
-    static String uid;
+    public static String uid;
     public static String Bhawan;
 
 

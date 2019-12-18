@@ -72,7 +72,7 @@ public class homePageFrag extends Fragment
                 MainActivity.Bhawan = "Ravindra";
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 // Replace the contents of the container with the new fragment
-                ft.replace(R.id.your_placeholder, new RJBMenu());
+                ft.replace(R.id.your_placeholder, new MenuPage());
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
                 ft.commit();
@@ -87,7 +87,7 @@ public class homePageFrag extends Fragment
                 MainActivity.Bhawan = "RKB";
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 // Replace the contents of the container with the new fragment
-                ft.replace(R.id.your_placeholder, new RJBMenu());
+                ft.replace(R.id.your_placeholder, new MenuPage());
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
                 ft.commit();
@@ -102,7 +102,7 @@ public class homePageFrag extends Fragment
                 MainActivity.Bhawan = "cautley";
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 // Replace the contents of the container with the new fragment
-                ft.replace(R.id.your_placeholder, new RJBMenu());
+                ft.replace(R.id.your_placeholder, new MenuPage());
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
                 ft.commit();
@@ -117,7 +117,7 @@ public class homePageFrag extends Fragment
                 MainActivity.Bhawan = "sarojini";
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 // Replace the contents of the container with the new fragment
-                ft.replace(R.id.your_placeholder, new RJBMenu());
+                ft.replace(R.id.your_placeholder, new MenuPage());
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
                 ft.commit();

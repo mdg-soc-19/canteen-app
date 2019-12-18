@@ -43,7 +43,7 @@ import static android.content.ContentValues.TAG;
 import static com.example.canteen_app.MainActivity.Bhawan;
 import static com.example.canteen_app.MainActivity.uid;
 
-
+/*
 public class RJBMenu extends Fragment implements View.OnClickListener, AuthStateListener {
     public int k;
     private static int resumer = 2;
@@ -399,7 +399,7 @@ class Item
     public Boolean Availablity;
 
 }
-/*class Item_Quant
+class Item_Quant
 {
     int quant;
     public void quant_incrementer()
@@ -407,7 +407,7 @@ class Item
         quant++;
     }
     public void quant_decrementer() { quant--;}
-}*/
+}
 
 class order
 {
@@ -417,3 +417,4 @@ class order
 
     }
 }
+*/

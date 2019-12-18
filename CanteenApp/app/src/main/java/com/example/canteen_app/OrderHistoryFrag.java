@@ -6,8 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,127 +51,133 @@ public class OrderHistoryFrag extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
+    public static Fragment frag;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_order_history, container, false);
-
+        frag = this;
         final ProgressBar pb = view.findViewById(R.id.pBar);
         pb.setVisibility(View.VISIBLE);
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final LinearLayout ll = view.findViewById(R.id.OrderHistoryLL);
 
+        orderHistoryViewModel mViewModel = ViewModelProviders.of(this).get(orderHistoryViewModel.class);
+        // Create the observer which updates the UI.
+        final Observer<Map<String, Object>> orderObserver = new Observer<Map<String, Object>>() {
+            @Override
+            public void onChanged(@Nullable final Map<String, Object> data) {
 
-        db.collection("users").document("usersdoc").collection(uid).orderBy("Date", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful())
-                        {
-                            pb.setVisibility(View.GONE);
-                            for (QueryDocumentSnapshot document : task.getResult()) {
+                pb.setVisibility(View.GONE);
+                for (QueryDocumentSnapshot document : (QuerySnapshot)data.get("document")) {
 
-                                MaterialCardView materialCardView = new MaterialCardView(getActivity());
-                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-2, -2);
-                                params.setMargins(10, 50, 10, 10);
-                                materialCardView.setLayoutParams(params);
-                                materialCardView.setCardBackgroundColor(Color.parseColor("#ffffff"));
-                                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(-2, -2);
-                                param.setMargins(10, 10, 10, 10);
-                                LinearLayout cardlinear = new LinearLayout(getActivity());
-                                cardlinear.setLayoutParams(param);
-                                cardlinear.setOrientation(LinearLayout.VERTICAL);
+                    MaterialCardView materialCardView = new MaterialCardView(getActivity());
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-2, -2);
+                    params.setMargins(10, 50, 10, 10);
+                    materialCardView.setLayoutParams(params);
+                    materialCardView.setCardBackgroundColor(Color.parseColor("#ffffff"));
+                    LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(-2, -2);
+                    param.setMargins(10, 10, 10, 10);
+                    LinearLayout cardlinear = new LinearLayout(getActivity());
+                    cardlinear.setLayoutParams(param);
+                    cardlinear.setOrientation(LinearLayout.VERTICAL);
 
-                                TextView bhawan = new TextView(getActivity());
-                                bhawan.setText("Bhawan : " + document.get("Bhawan") );
-                                bhawan.setTextColor(Color.parseColor("#000000"));
-                                bhawan.setLayoutParams(param);
-                                cardlinear.addView(bhawan);
+                    TextView bhawan = new TextView(getActivity());
+                    bhawan.setText("Bhawan : " + document.get("Bhawan") );
+                    bhawan.setTextColor(Color.parseColor("#000000"));
+                    bhawan.setLayoutParams(param);
+                    cardlinear.addView(bhawan);
 
-                                TextView date = new TextView(getActivity());
-                                date.setText("Date and Time : \n" + document.get("Date") );
-                                date.setTextColor(Color.parseColor("#000000"));
-                                date.setLayoutParams(param);
-                                cardlinear.addView(date);
+                    TextView date = new TextView(getActivity());
+                    date.setText("Date and Time : \n" + document.get("Date") );
+                    date.setTextColor(Color.parseColor("#000000"));
+                    date.setLayoutParams(param);
+                    cardlinear.addView(date);
 
-                                GridLayout gl = new GridLayout(getActivity());
-                                gl.setColumnCount(3);
-                                gl.setLayoutParams(param);
-                                gl.setBackgroundColor(Color.parseColor("#e3e2de"));
+                    GridLayout gl = new GridLayout(getActivity());
+                    gl.setColumnCount(3);
+                    gl.setLayoutParams(param);
+                    gl.setBackgroundColor(Color.parseColor("#e3e2de"));
 
 
 
-                                Map<String, Object> Items =  new HashMap<>();
-                                Items.put("Item", document.get("Item"));
+                    Map<String, Object> Items =  new HashMap<>();
+                    Items.put("Item", document.get("Item"));
 
-                                Map<String, Object> itemlist = (Map)(Items.get("Item"));
-                                int i = 1;
-                                int total = 0;
-                                for (Map.Entry<String, Object> entry : itemlist.entrySet())
-                                {
+                    Map<String, Object> itemlist = (Map)(Items.get("Item"));
+                    int i = 1;
+                    int total = 0;
+                    for (Map.Entry<String, Object> entry : itemlist.entrySet())
+                    {
 
-                                    System.out.println("Value is " + entry.getValue());
-                                    Map<String, Map<String, Object>> orderItem = new HashMap<>();
-                                    orderItem.put(entry.getKey(), (Map)entry.getValue());
-                                    String Name = (orderItem.get(entry.getKey()).get("Name")).toString();
-                                    String P = (orderItem.get(entry.getKey()).get("Price")).toString();
-                                    int Price = Integer.parseInt(P);
-                                    String Q = (orderItem.get(entry.getKey()).get("Quantity")).toString();
-                                    int Quantity = Integer.parseInt(Q);
+                        System.out.println("Value is " + entry.getValue());
+                        Map<String, Map<String, Object>> orderItem = new HashMap<>();
+                        orderItem.put(entry.getKey(), (Map)entry.getValue());
+                        String Name = (orderItem.get(entry.getKey()).get("Name")).toString();
+                        String P = (orderItem.get(entry.getKey()).get("Price")).toString();
+                        int Price = Integer.parseInt(P);
+                        String Q = (orderItem.get(entry.getKey()).get("Quantity")).toString();
+                        int Quantity = Integer.parseInt(Q);
 
-                                    if(Quantity!=0) {
-                                        //column1
-                                        TextView tv = new TextView(getActivity().getApplicationContext());
-                                        tv.setWidth(50);
-                                        tv.setText(Integer.toString(i++));
-                                        tv.setTextColor(Color.parseColor("#000000"));
-                                        tv.setBackgroundColor(Color.parseColor("#e3e2de"));
-                                        tv.setId(1 + 10 * i);
-                                        gl.addView(tv);
+                        if(Quantity!=0) {
+                            //column1
+                            TextView tv = new TextView(getActivity().getApplicationContext());
+                            tv.setWidth(50);
+                            tv.setText(Integer.toString(i++));
+                            tv.setTextColor(Color.parseColor("#000000"));
+                            tv.setBackgroundColor(Color.parseColor("#e3e2de"));
+                            tv.setId(1 + 10 * i);
+                            gl.addView(tv);
 
-                                        //column2
-                                        TextView tv2 = new TextView(getActivity().getApplicationContext());
-                                        tv2.setWidth(200);
-                                        tv2.setText(Name);
-                                        tv2.setTextColor(Color.parseColor("#000000"));
-                                        tv2.setBackgroundColor(Color.parseColor("#e3e2de"));
-                                        tv2.setId(2 + 10 * i);
-                                        gl.addView(tv2);
+                            //column2
+                            TextView tv2 = new TextView(getActivity().getApplicationContext());
+                            tv2.setWidth(200);
+                            tv2.setText(Name);
+                            tv2.setTextColor(Color.parseColor("#000000"));
+                            tv2.setBackgroundColor(Color.parseColor("#e3e2de"));
+                            tv2.setId(2 + 10 * i);
+                            gl.addView(tv2);
 
-                                        //column3
-                                        TextView tv3 = new TextView(getActivity().getApplicationContext());
-                                        tv3.setWidth(200);
-                                        tv3.setText("Rs. " + Price + " X" + Quantity);
-                                        tv3.setTextColor(Color.parseColor("#000000"));
-                                        tv3.setBackgroundColor(Color.parseColor("#e3e2de"));
-                                        tv3.setId(3 + 10 * i);
-                                        gl.addView(tv3);
-                                        total += Price * Quantity;
-                                    }
-
-                                }
-                                cardlinear.addView(gl);
-                                TextView tot = new TextView(getActivity());
-                                tot.setText("Total = " + total);
-                                tot.setTextColor(Color.parseColor("#000000"));
-                                tot.setBackgroundColor(Color.parseColor("#e3e2de"));
-
-                                tot.setLayoutParams(param);
-                                cardlinear.addView(tot);
-                                materialCardView.addView(cardlinear);
-                                ll.addView(materialCardView);
-                            }
-
+                            //column3
+                            TextView tv3 = new TextView(getActivity().getApplicationContext());
+                            tv3.setWidth(200);
+                            tv3.setText("Rs. " + Price + " X" + Quantity);
+                            tv3.setTextColor(Color.parseColor("#000000"));
+                            tv3.setBackgroundColor(Color.parseColor("#e3e2de"));
+                            tv3.setId(3 + 10 * i);
+                            gl.addView(tv3);
+                            total += Price * Quantity;
                         }
-                        else
-                        {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
+
                     }
-                });
+                    cardlinear.addView(gl);
+                    TextView tot = new TextView(getActivity());
+                    tot.setText("Total = " + total);
+                    tot.setTextColor(Color.parseColor("#000000"));
+                    tot.setBackgroundColor(Color.parseColor("#e3e2de"));
+
+                    tot.setLayoutParams(param);
+                    cardlinear.addView(tot);
+                    materialCardView.addView(cardlinear);
+                    ll.addView(materialCardView);
+                }
+
+
+            }};
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        mViewModel.getCurrentOrder().observe(this, orderObserver);
+
+
+
+
+
+
+
+
+
         MaterialButton home = view.findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
             @Override

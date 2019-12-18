@@ -6,8 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +26,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -55,7 +60,7 @@ public class CheckoutFrag extends Fragment {
 
     }
 
-
+    public static Fragment frag;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,95 +72,91 @@ public class CheckoutFrag extends Fragment {
         final ProgressBar pb = view.findViewById(R.id.pBar);
         pb.setVisibility(View.VISIBLE);
         final GridLayout gl = view.findViewById(R.id.GridCheckout);
-        final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection(Bhawan + "-orders").document(uid)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful())
-                        {
-                            pb.setVisibility(View.GONE);
-                            DocumentSnapshot document = task.getResult();
-
-                            System.out.println(document.getData());
-                            Map<String, Object> Items =  new HashMap<>();
-                            Items.put("Item", document.get("Item"));
-                            System.out.println("ITEMS : " + Items);
-                            Map<String, Object> itemlist = (Map)(Items.get("Item"));
-
-                            String orderState = (String)document.get("OrderState");
-                            System.out.println(orderState);
-                            if(orderState.equals("Placed"))
-                            {
-                                Place.setText("Order Placed");
-                                Place.setBackgroundColor(Color.parseColor("#63EC27"));
-                            }
-                            int i = 1;
-                            int total = 0;
-                            for (Map.Entry<String, Object> entry : itemlist.entrySet())
-                            {
-
-                                System.out.println("Value is " + entry.getValue());
-                                Map<String, Map<String, Object>> orderItem = new HashMap<>();
-                                orderItem.put(entry.getKey(), (Map)entry.getValue());
-                                String Name = (orderItem.get(entry.getKey()).get("Name")).toString();
-                                String P = (orderItem.get(entry.getKey()).get("Price")).toString();
-                                int Price = Integer.parseInt(P);
-                                String Q = (orderItem.get(entry.getKey()).get("Quantity")).toString();
-                                int Quantity = Integer.parseInt(Q);
-
-                                if(Quantity!=0) {
-                                    //column1
-                                    TextView tv = new TextView(getActivity().getApplicationContext());
-                                    tv.setWidth(50);
-                                    tv.setText(Integer.toString(i++));
-                                    tv.setTextColor(Color.parseColor("#000000"));
-                                    tv.setBackgroundColor(Color.parseColor("#ffffff"));
-                                    tv.setId(1 + 10 * i);
-                                    gl.addView(tv);
-
-                                    //column2
-                                    TextView tv2 = new TextView(getActivity().getApplicationContext());
-                                    tv2.setWidth(200);
-                                    tv2.setText(Name);
-                                    tv2.setTextColor(Color.parseColor("#000000"));
-                                    tv2.setBackgroundColor(Color.parseColor("#ffffff"));
-                                    tv2.setId(2 + 10 * i);
-                                    gl.addView(tv2);
-
-                                    //column3
-                                    TextView tv3 = new TextView(getActivity().getApplicationContext());
-                                    tv3.setWidth(200);
-                                    tv3.setText("Rs. " + Price + " X" + Quantity);
-                                    tv3.setTextColor(Color.parseColor("#000000"));
-                                    tv3.setBackgroundColor(Color.parseColor("#ffffff"));
-                                    tv3.setId(3 + 10 * i);
-                                    gl.addView(tv3);
-                                    total += Price * Quantity;
-                                }
-
-                            }
-                            TextView Total = (TextView)view.findViewById(R.id.TotalAmount);
-                            String tot = new String(total + "");
-                            Total.setText(tot);
-                            System.out.println("total is " + Total.getText());
+        frag = this;
 
 
-                        }
-                        else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
+        CheckoutViewModel mViewModel = ViewModelProviders.of(this).get(CheckoutViewModel.class);
+        // Create the observer which updates the UI.
+        final Observer<Map<String, Object>> orderObserver = new Observer<Map<String, Object>>() {
+            @Override
+            public void onChanged(@Nullable final Map<String, Object> data) {
+
+                TextView tvsa = view.findViewById(R.id.tvcsa);
+                TextView tvre = view.findViewById(R.id.tvcre);
+                TextView tvga = view.findViewById(R.id.tvcga);
+                if(gl.getChildCount() > 0)
+                    gl.removeAllViews();
+                gl.addView(tvsa);
+                gl.addView(tvre);
+                gl.addView(tvga);
+                pb.setVisibility(View.GONE);
+
+                Map<String, Object> itemlist = (Map)(data.get("Item"));
+
+
+                int i = 1;
+                int total = 0;
+                for (Map.Entry<String, Object> entry : itemlist.entrySet()) {
+
+                    System.out.println("Value is " + entry.getValue());
+                    Map<String, Map<String, Object>> orderItem = new HashMap<>();
+                    orderItem.put(entry.getKey(), (Map) entry.getValue());
+                    String Name = (orderItem.get(entry.getKey()).get("Name")).toString();
+                    String P = (orderItem.get(entry.getKey()).get("Price")).toString();
+                    int Price = Integer.parseInt(P);
+                    String Q = (orderItem.get(entry.getKey()).get("Quantity")).toString();
+                    int Quantity = Integer.parseInt(Q);
+
+                    if (Quantity != 0) {
+                        //column1
+                        TextView tv = new TextView(getActivity().getApplicationContext());
+                        tv.setWidth(50);
+                        tv.setText(Integer.toString(i++));
+                        tv.setTextColor(Color.parseColor("#000000"));
+                        tv.setBackgroundColor(Color.parseColor("#ffffff"));
+                        tv.setId(1 + 10 * i);
+                        gl.addView(tv);
+
+                        //column2
+                        TextView tv2 = new TextView(getActivity().getApplicationContext());
+                        tv2.setWidth(200);
+                        tv2.setText(Name);
+                        tv2.setTextColor(Color.parseColor("#000000"));
+                        tv2.setBackgroundColor(Color.parseColor("#ffffff"));
+                        tv2.setId(2 + 10 * i);
+                        gl.addView(tv2);
+
+                        //column3
+                        TextView tv3 = new TextView(getActivity().getApplicationContext());
+                        tv3.setWidth(200);
+                        tv3.setText("Rs. " + Price + " X" + Quantity);
+                        tv3.setTextColor(Color.parseColor("#000000"));
+                        tv3.setBackgroundColor(Color.parseColor("#ffffff"));
+                        tv3.setId(3 + 10 * i);
+                        gl.addView(tv3);
+                        total += Price * Quantity;
                     }
-                });
+
+                }
+                TextView Total = view.findViewById(R.id.TotalAmount);
+                String tot = new String(total + "");
+                Total.setText(tot);
 
 
 
+
+
+
+            }};
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        mViewModel.getCurrentOrder().observe(this, orderObserver);
 
         Place.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final FirebaseFirestore db = FirebaseFirestore.getInstance();
                 Map<String, Object> OrderData = new HashMap<>();
                 OrderData.put("OrderState", "Placed");
                 db.collection(Bhawan + "-orders").document(uid).set(OrderData, SetOptions.merge());
@@ -206,6 +207,11 @@ public class CheckoutFrag extends Fragment {
     public void onPause() {
         super.onPause();
         MainActivity.mCurrentFragment = resumer;
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        CheckoutViewModel mViewModel = ViewModelProviders.of(this).get(CheckoutViewModel.class);
     }
 
 
