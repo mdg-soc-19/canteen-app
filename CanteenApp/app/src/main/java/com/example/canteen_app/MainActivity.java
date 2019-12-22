@@ -42,10 +42,11 @@ public class MainActivity extends AppCompatActivity  {
 
     public void onCreate(Bundle savedInstanceState)
     {
+        setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_main);
+
         setTheme(R.style.CanteenAppTheme);
         //authcode
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
