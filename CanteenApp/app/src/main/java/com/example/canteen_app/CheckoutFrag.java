@@ -43,6 +43,7 @@ import java.time.LocalDateTime;
 
 import static android.content.ContentValues.TAG;
 import static com.example.canteen_app.MainActivity.Bhawan;
+import static com.example.canteen_app.MainActivity.Name;
 import static com.example.canteen_app.MainActivity.uid;
 
 
@@ -176,6 +177,7 @@ public class CheckoutFrag extends Fragment {
                                     LocalDateTime now = LocalDateTime.now();
                                     Map<String, Object> tempDoc = document.getData();
                                     tempDoc.put("Date", dtf.format(now));
+                                    tempDoc.put("Name", Name);
                                     db.collection(Bhawan + "-orders")
                                             .add(tempDoc);
                                     //Bhawan orders doesnt need bhawan name.

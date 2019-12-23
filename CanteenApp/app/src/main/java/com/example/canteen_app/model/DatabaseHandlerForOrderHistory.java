@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.canteen_app.CheckoutFrag;
 import com.example.canteen_app.CheckoutViewModel;
+import com.example.canteen_app.MenuPage;
+import com.example.canteen_app.MenuPageViewModel;
 import com.example.canteen_app.OrderHistoryFrag;
 import com.example.canteen_app.R;
 import com.example.canteen_app.homePageFrag;
@@ -21,7 +23,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.database.annotations.Nullable;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -56,7 +61,23 @@ public class DatabaseHandlerForOrderHistory {
 
                     }
                 });
+        db.collection("users").document("usersdoc").collection(uid).orderBy("Date", Query.Direction.DESCENDING)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
 
+
+
+                        data.put("document",value);
+                        orderHistoryViewModel mViewModel = ViewModelProviders.of(OrderHistoryFrag.frag).get(orderHistoryViewModel.class);
+                        mViewModel.getCurrentOrder().setValue(data);
+                    }
+                });
 
 
     }

@@ -11,29 +11,7 @@
         android:id="@+id/your_placeholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#ffffff">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:foregroundGravity="center"
-                android:src="@drawable/splash" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:text="Made by Angad for MDG's SOC"
-                android:textColor="#000000"
-                android:textAlignment="center"
-                android:layout_marginBottom="10dp"
-                />
-
-
-        </RelativeLayout>
     </FrameLayout>
 
 

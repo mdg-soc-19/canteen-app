@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity  {
     static GoogleSignInClient mGoogleSignInClient;
     public static String uid;
     public static String Bhawan;
+    public static String Name;
 
 
     // [START declare_auth]
@@ -87,6 +88,11 @@ public class MainActivity extends AppCompatActivity  {
                     for (UserInfo profile : user.getProviderData())
                     {
                         uid = profile.getUid();
+                        Name = profile.getDisplayName();
+                        for(int i=0; i<10; i++)
+                        {
+                            System.out.println(Name);
+                        }
                     }
                 }
 
