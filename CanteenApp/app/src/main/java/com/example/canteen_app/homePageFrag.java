@@ -1,10 +1,12 @@
 package com.example.canteen_app;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -12,8 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
 
@@ -39,6 +43,11 @@ public class homePageFrag extends Fragment
         ImageView rajiv = view.findViewById(R.id.rajivg);
         rajiv.setImageResource(R.drawable.rajivliner);
 
+
+
+
+
+
         //listener - list
         MaterialCardView RJBCard = view.findViewById(R.id.RJB);
         RJBCard.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +57,7 @@ public class homePageFrag extends Fragment
                 MainActivity.Bhawan = "RJB";
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     // Replace the contents of the container with the new fragment
-                    ft.replace(R.id.your_placeholder, new RJBMenu());
+                    ft.replace(R.id.your_placeholder, new MenuPage());
                     // or ft.add(R.id.your_placeholder, new FooFragment());
                     // Complete the changes added above
                     ft.commit();
@@ -63,7 +72,7 @@ public class homePageFrag extends Fragment
                 MainActivity.Bhawan = "Ravindra";
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 // Replace the contents of the container with the new fragment
-                ft.replace(R.id.your_placeholder, new RJBMenu());
+                ft.replace(R.id.your_placeholder, new MenuPage());
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
                 ft.commit();
@@ -78,7 +87,7 @@ public class homePageFrag extends Fragment
                 MainActivity.Bhawan = "RKB";
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 // Replace the contents of the container with the new fragment
-                ft.replace(R.id.your_placeholder, new RJBMenu());
+                ft.replace(R.id.your_placeholder, new MenuPage());
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
                 ft.commit();
@@ -93,7 +102,7 @@ public class homePageFrag extends Fragment
                 MainActivity.Bhawan = "cautley";
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 // Replace the contents of the container with the new fragment
-                ft.replace(R.id.your_placeholder, new RJBMenu());
+                ft.replace(R.id.your_placeholder, new MenuPage());
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
                 ft.commit();
@@ -108,7 +117,23 @@ public class homePageFrag extends Fragment
                 MainActivity.Bhawan = "sarojini";
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 // Replace the contents of the container with the new fragment
-                ft.replace(R.id.your_placeholder, new RJBMenu());
+                ft.replace(R.id.your_placeholder, new MenuPage());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+
+            }
+        });
+
+        MaterialButton history = view.findViewById(R.id.Orderhist);
+        history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new OrderHistoryFrag());
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
                 ft.commit();

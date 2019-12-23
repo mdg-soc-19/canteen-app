@@ -5,7 +5,9 @@ package com.example.canteen_app;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -17,6 +19,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity  {
@@ -25,8 +32,8 @@ public class MainActivity extends AppCompatActivity  {
     static int mCurrentFragment;
     static int mDefaultFragment = 1;
     static GoogleSignInClient mGoogleSignInClient;
-    static String uid;
-    static String Bhawan;
+    public static String uid;
+    public static String Bhawan;
 
 
     // [START declare_auth]
@@ -67,7 +74,24 @@ public class MainActivity extends AppCompatActivity  {
     protected void onStart() {
         getSupportActionBar().hide();
         super.onStart();
+        FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                System.out.println("BOOOOOOOOM");
+                if(user!=null)
+                {
+                    // Sign in logic here.
+                    uid = "PLACEHOLDER";
+                    for (UserInfo profile : user.getProviderData())
+                    {
+                        uid = profile.getUid();
+                    }
+                }
 
+
+            }
+        });
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
@@ -104,7 +128,7 @@ public class MainActivity extends AppCompatActivity  {
                 case 2:
                     ft = getSupportFragmentManager().beginTransaction();
                     // Replace the contents of the container with the new fragment
-                    ft.replace(R.id.your_placeholder, new RJBMenu());
+                    ft.replace(R.id.your_placeholder, new MenuPage());
                     // or ft.add(R.id.your_placeholder, new FooFragment());
                     // Complete the changes added above
                     ft.commit();
@@ -113,6 +137,14 @@ public class MainActivity extends AppCompatActivity  {
                     ft = getSupportFragmentManager().beginTransaction();
                     // Replace the contents of the container with the new fragment
                     ft.replace(R.id.your_placeholder, new CheckoutFrag());
+                    // or ft.add(R.id.your_placeholder, new FooFragment());
+                    // Complete the changes added above
+                    ft.commit();
+                    break;
+                case 4:
+                    ft = getSupportFragmentManager().beginTransaction();
+                    // Replace the contents of the container with the new fragment
+                    ft.replace(R.id.your_placeholder, new OrderHistoryFrag());
                     // or ft.add(R.id.your_placeholder, new FooFragment());
                     // Complete the changes added above
                     ft.commit();

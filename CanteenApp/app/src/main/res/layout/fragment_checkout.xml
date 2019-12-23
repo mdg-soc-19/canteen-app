@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="0dp">
+        android:layout_marginTop="0dp"
+        android:background="@color/colorPrimaryDark">
         <ProgressBar
             android:id="@+id/pBar"
             style="?android:attr/progressBarStyleLarge"
@@ -54,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/usernamedisplay"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 />
         </RelativeLayout>
         <TextView
@@ -79,7 +80,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="#ffffff">
-
                 <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -95,12 +95,14 @@
                         android:textColor="#000000"
                         android:background="#ffffff"
                         android:text="Sr no."
+                        android:id="@+id/tvcsa"
                         android:fontFamily="sans-serif-medium"/>
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:textColor="#000000"
                         android:text="Name"
+                        android:id="@+id/tvcre"
                         android:background="#ffffff"
                         android:fontFamily="sans-serif-medium"/>
                     <TextView
@@ -109,12 +111,10 @@
                         android:textColor="#000000"
                         android:text="Price"
                         android:background="#ffffff"
+                        android:id="@+id/tvcga"
                         android:fontFamily="sans-serif-medium"/>
-
-
-
-
                 </GridLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -142,13 +142,6 @@
                 </RelativeLayout>
 
             </LinearLayout>
-
-
-
-
-
-
-
         </com.google.android.material.card.MaterialCardView>
         <RelativeLayout
             android:layout_width="match_parent"
