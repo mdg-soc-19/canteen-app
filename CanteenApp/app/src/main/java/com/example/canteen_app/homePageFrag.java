@@ -143,6 +143,9 @@ public class homePageFrag extends Fragment
         //listener-end
 
 
+        MainActivity.mPrevFragment = MainActivity.mCurrentFragment;
+        MainActivity.mCurrentFragment = resumer;
+
         return view;
 
     }

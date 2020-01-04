@@ -58,15 +58,26 @@
                 android:layout_alignParentEnd="true"
                 />
         </RelativeLayout>
-        <TextView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Your Order"
-            android:fontFamily="@assets/RobotoMedium"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:background="#ffffff"
-            android:textSize="28sp"/>
+            android:background="#ffffff">
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back"
+                android:id="@+id/backbtn"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Your Order"
+                android:fontFamily="@assets/RobotoMedium"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:background="#ffffff"
+                android:textSize="28sp"/>
+        </RelativeLayout>
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

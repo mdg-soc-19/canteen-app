@@ -41,44 +41,60 @@ public class DatabaseHandlerForOrderHistory {
 
     public static void initialize()
     {
-        final Map<String, Object> data = new HashMap<>();
-        final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").document("usersdoc").collection(uid).orderBy("Date", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful())
-                        {
-                            data.put("document", task.getResult());
-                            orderHistoryViewModel mViewModel = ViewModelProviders.of(OrderHistoryFrag.frag).get(orderHistoryViewModel.class);
-                            mViewModel.getCurrentOrder().setValue(data);
+        try {
+            final Map<String, Object> data = new HashMap<>();
+            final FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("users").document("usersdoc").collection(uid).orderBy("Date", Query.Direction.DESCENDING)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful())
+                            {
+                                data.put("document", task.getResult());
+                                try{orderHistoryViewModel mViewModel = ViewModelProviders.of(OrderHistoryFrag.frag).get(orderHistoryViewModel.class);
+                                    mViewModel.getCurrentOrder().setValue(data);}
+                                catch (Exception e)
+                                {}
+
+                            }
+                            else
+                            {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+
                         }
-                        else
-                        {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                    });
+            db.collection("users").document("usersdoc").collection(uid).orderBy("Date", Query.Direction.DESCENDING)
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value,
+                                            @Nullable FirebaseFirestoreException e) {
+                            if (e != null) {
+                                Log.w(TAG, "Listen failed.", e);
+                                return;
+                            }
+
+
+
+                            data.put("document",value);
+                            try
+                            {
+                                orderHistoryViewModel mViewModel = ViewModelProviders.of(OrderHistoryFrag.frag).get(orderHistoryViewModel.class);
+                                mViewModel.getCurrentOrder().setValue(data);
+                            }catch (Exception E)
+                            {}
+
                         }
-
-                    }
-                });
-        db.collection("users").document("usersdoc").collection(uid).orderBy("Date", Query.Direction.DESCENDING)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
+                    });
 
 
 
-                        data.put("document",value);
-                        orderHistoryViewModel mViewModel = ViewModelProviders.of(OrderHistoryFrag.frag).get(orderHistoryViewModel.class);
-                        mViewModel.getCurrentOrder().setValue(data);
-                    }
-                });
+        }
+        catch (Exception e)
+        {
 
+        }
 
     }
 

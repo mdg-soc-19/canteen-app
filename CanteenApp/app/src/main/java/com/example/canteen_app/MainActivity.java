@@ -2,6 +2,7 @@ package com.example.canteen_app;
 
 
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity  {
     static final int RC_SIGN_IN = 9001;
     static final String LAST_FRAGMENT = "userFragment";
     static int mCurrentFragment;
+    static int mPrevFragment;
     static int mDefaultFragment = 1;
     static GoogleSignInClient mGoogleSignInClient;
     public static String uid;
@@ -70,6 +72,8 @@ public class MainActivity extends AppCompatActivity  {
         }
         else
             { mCurrentFragment = mDefaultFragment; }
+
+
     }
 
     @Override
@@ -161,4 +165,52 @@ public class MainActivity extends AppCompatActivity  {
 
         }
     }
+    @Override
+    public void onBackPressed()
+    {
+
+
+
+
+        switch(mPrevFragment)
+        {
+            case 1:
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new homePageFrag());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+                break;
+            case 2:
+                ft = getSupportFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new MenuPage());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+                break;
+            case 3:
+                ft = getSupportFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new homePageFrag());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+                break;
+            case 4:
+                ft = getSupportFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new OrderHistoryFrag());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+
+
+        }
+
+
+
+    }
 }
+

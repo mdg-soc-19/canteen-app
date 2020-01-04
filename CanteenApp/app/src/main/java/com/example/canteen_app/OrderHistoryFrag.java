@@ -248,7 +248,8 @@ public class OrderHistoryFrag extends Fragment {
 
 
 
-
+        MainActivity.mPrevFragment = MainActivity.mCurrentFragment;
+        MainActivity.mCurrentFragment = resumer;
 
         return view;
     }

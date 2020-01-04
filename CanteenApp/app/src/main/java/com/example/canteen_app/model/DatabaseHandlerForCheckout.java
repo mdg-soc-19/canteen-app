@@ -27,24 +27,35 @@ public class DatabaseHandlerForCheckout {
 
     public static void initialize()
     {
-        final Map<String, Object> orderData = new HashMap<>();
-        final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(Bhawan + "-orders").document(uid)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            orderData.put("Item", document.get("Item"));
+        try{
+            final Map<String, Object> orderData = new HashMap<>();
+            final FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection(Bhawan + "-orders").document(uid)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                orderData.put("Item", document.get("Item"));
+                                try
+                                {
+                                    CheckoutViewModel mViewModel = ViewModelProviders.of(CheckoutFrag.frag).get(CheckoutViewModel.class);
+                                    mViewModel.getCurrentOrder().setValue(orderData);
+                                }catch (Exception e)
+                                {}
 
-                            CheckoutViewModel mViewModel = ViewModelProviders.of(CheckoutFrag.frag).get(CheckoutViewModel.class);
-                            mViewModel.getCurrentOrder().setValue(orderData);
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
                         }
-                    }
-                });
+                    });
+
+        }catch (Exception e)
+        {
+
+        }
+
     }
 
 

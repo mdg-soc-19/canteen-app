@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -217,7 +218,7 @@ public class MenuPage extends Fragment {
                                                 {
                                                     Long quant = (Long) tempMap1.get("Quantity");
                                                     iq.quant = quant.intValue();
-                                                    if(quant!=0)
+                                                    if(iq.quant!=0)
                                                     {
                                                         checkoutpossible = true;
                                                     }
@@ -375,10 +376,11 @@ public class MenuPage extends Fragment {
 
 
 
-
-
+        MainActivity.mPrevFragment = MainActivity.mCurrentFragment;
+        MainActivity.mCurrentFragment = resumer;
         return view;
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

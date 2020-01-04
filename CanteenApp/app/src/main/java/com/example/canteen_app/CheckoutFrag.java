@@ -203,6 +203,22 @@ public class CheckoutFrag extends Fragment {
             }
         });
 
+
+        Button backb = view.findViewById(R.id.backbtn);
+
+        backb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new MenuPage());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+            }
+        });
+        MainActivity.mPrevFragment = MainActivity.mCurrentFragment;
+        MainActivity.mCurrentFragment = resumer;
         return view;
     }
     @Override
