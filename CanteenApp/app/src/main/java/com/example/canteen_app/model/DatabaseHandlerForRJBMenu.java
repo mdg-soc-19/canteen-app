@@ -29,45 +29,56 @@ public class DatabaseHandlerForRJBMenu {
 
     public static void initialize()
     {
-        final Map<String, Object> Bhawanitems = new HashMap<>();
-        final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(Bhawan + "-items")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
+        try {
+            final Map<String, Object> Bhawanitems = new HashMap<>();
+            final FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection(Bhawan + "-items")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Bhawanitems.put((String)document.get("Name"), document);
+
+                                }
+                                try{
+                                    MenuPageViewModel mViewModel = ViewModelProviders.of(MenuPage.frag).get(MenuPageViewModel.class);
+                                    mViewModel.getCurrentMenu().setValue(Bhawanitems);
+                                }catch (Exception e)
+                                {
+                                }
+
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+            db.collection(Bhawan+"-items")
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value,
+                                            @Nullable FirebaseFirestoreException e) {
+                            if (e != null) {
+                                Log.w(TAG, "Listen failed.", e);
+                                return;
+                            }
+                            for (QueryDocumentSnapshot document : value) {
                                 Bhawanitems.put((String)document.get("Name"), document);
 
                             }
                             MenuPageViewModel mViewModel = ViewModelProviders.of(MenuPage.frag).get(MenuPageViewModel.class);
                             mViewModel.getCurrentMenu().setValue(Bhawanitems);
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
-                    }
-                });
-        db.collection(Bhawan+"-items")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
-                        for (QueryDocumentSnapshot document : value) {
-                            Bhawanitems.put((String)document.get("Name"), document);
-
-                        }
-                        MenuPageViewModel mViewModel = ViewModelProviders.of(MenuPage.frag).get(MenuPageViewModel.class);
-                        mViewModel.getCurrentMenu().setValue(Bhawanitems);
-                    }
-                });
+                    });
 
 
-      return;
+            return;
+        }catch (Exception e)
+        {
+
+        }
+
     }
 }
 

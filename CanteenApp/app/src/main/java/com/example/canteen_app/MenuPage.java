@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -99,209 +100,219 @@ public class MenuPage extends Fragment {
                 for (Map.Entry<String,Object> entry : data.entrySet())
                 {
 
-                    final String name = (String)((QueryDocumentSnapshot)(entry.getValue())).get("Name");
-                    final int price =  ((Long)((QueryDocumentSnapshot)(entry.getValue())).get("Price")).intValue();
-
-                    final boolean aty = (boolean)((QueryDocumentSnapshot)(entry.getValue())).get("Availablity");
-
-                    //adding to frag
-                    LinearLayout.LayoutParams paramstv = new LinearLayout.LayoutParams(-2, -2);
-                    paramstv.setMargins(0, 0, 20, 0);
-                    //column1
-                    TextView tv = new TextView(getActivity().getApplicationContext());
-
-                    tv.setText(Integer.toString(i++));
-                    tv.setTextColor(Color.parseColor("#000000"));
-                    //tv.setBackgroundColor(Color.parseColor("#ffffff"));
-                    tv.setId(1 + 10*i);
-                    tv.setLayoutParams(paramstv);
-                    gl.addView(tv);
+                    try {
+                        final String name = (String)((QueryDocumentSnapshot)(entry.getValue())).get("Name");
 
 
-                    //column2
-                    TextView tv2 = new TextView(getActivity().getApplicationContext());
-
-                    tv2.setText(name);
-                    tv2.setTextColor(Color.parseColor("#000000"));
-                    //tv2.setBackgroundColor(Color.parseColor("#ffffff"));
-                    tv2.setId(2 + 10*i);
-                    tv2.setLayoutParams(paramstv);
-                    tv2.setMaxWidth(150);
-                    tv2.setSingleLine(false);
-                    gl.addView(tv2);
-
-                    //column3
-                    TextView tv3 = new TextView(getActivity().getApplicationContext());
-
-                    tv3.setText("Rs. " + price);
-                    tv3.setTextColor(Color.parseColor("#000000"));
-                    //tv3.setBackgroundColor(Color.parseColor("#ffffff"));
-                    tv3.setId(3 + 10*i);
-                    tv3.setLayoutParams(paramstv);
-                    gl.addView(tv3);
-
-                    //column4
-                    LinearLayout ll = new LinearLayout(getContext());
-                    ll.setOrientation(LinearLayout.HORIZONTAL);
-                    ll.setPadding(0,0,2,0);
-
-                    MaterialButton pb = new MaterialButton(getActivity(), null, R.attr.borderlessButtonStyle);
-
-                    if(aty)
-                        pb.setBackgroundColor(Color.parseColor("#D81B60"));
-                    else
-                        pb.setBackgroundColor(Color.parseColor("#696969"));
-                    pb.setText("+");
-
-                    pb.setTextColor(Color.parseColor("#000000"));
+                        final int price =  ((Long)((QueryDocumentSnapshot)(entry.getValue())).get("Price")).intValue();
 
 
 
-                    System.out.println("View grp layout is " + ViewGroup.LayoutParams.WRAP_CONTENT);
+                        final boolean aty = (boolean)((QueryDocumentSnapshot)(entry.getValue())).get("Availablity");
 
-                    //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(120, 120);
-                    //params.setMargins(0, 0, 10, 10);
-                    pb.setMinWidth(80);
-                    pb.setMinimumWidth(80);
+                        //adding to frag
+                        LinearLayout.LayoutParams paramstv = new LinearLayout.LayoutParams(-2, -2);
+                        paramstv.setMargins(0, 0, 20, 0);
+                        //column1
+                        TextView tv = new TextView(getActivity().getApplicationContext());
 
-                    pb.setLayoutParams(paramstv);
-
-
-
-
-                    MaterialButton mb = new MaterialButton(getActivity(), null, R.attr.borderlessButtonStyle);
-                    //Button mb = new Button(getActivity().getApplicationContext());
-
-                    if(aty)
-                        mb.setBackgroundColor(Color.parseColor("#D81B60"));
-                    else
-                        mb.setBackgroundColor(Color.parseColor("#696969"));
-                    mb.setText("-");
-                    mb.setTextColor(Color.parseColor("#000000"));
-                    mb.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
-                    int t = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    mb.setMinWidth(80);
-                    mb.setMinimumWidth(80);
-
-                    mb.setLayoutParams(paramstv);
+                        tv.setText(Integer.toString(i++));
+                        tv.setTextColor(Color.parseColor("#000000"));
+                        //tv.setBackgroundColor(Color.parseColor("#ffffff"));
+                        tv.setId(1 + 10*i);
+                        tv.setLayoutParams(paramstv);
+                        gl.addView(tv);
 
 
+                        //column2
+                        TextView tv2 = new TextView(getActivity().getApplicationContext());
 
-                    ll.addView(pb);
-                    ll.addView(mb);
-                    gl.addView(ll);
+                        tv2.setText(name);
+                        tv2.setTextColor(Color.parseColor("#000000"));
+                        //tv2.setBackgroundColor(Color.parseColor("#ffffff"));
+                        tv2.setId(2 + 10*i);
+                        tv2.setLayoutParams(paramstv);
+                        tv2.setMaxWidth(150);
+                        tv2.setSingleLine(false);
+                        gl.addView(tv2);
+
+                        //column3
+                        TextView tv3 = new TextView(getActivity().getApplicationContext());
+
+                        tv3.setText("Rs. " + price);
+                        tv3.setTextColor(Color.parseColor("#000000"));
+                        //tv3.setBackgroundColor(Color.parseColor("#ffffff"));
+                        tv3.setId(3 + 10*i);
+                        tv3.setLayoutParams(paramstv);
+                        gl.addView(tv3);
+
+                        //column4
+                        LinearLayout ll = new LinearLayout(getContext());
+                        ll.setOrientation(LinearLayout.HORIZONTAL);
+                        ll.setPadding(0,0,2,0);
+
+                        MaterialButton pb = new MaterialButton(getActivity(), null, R.attr.borderlessButtonStyle);
+
+                        if(aty)
+                            pb.setBackgroundColor(Color.parseColor("#D81B60"));
+                        else
+                            pb.setBackgroundColor(Color.parseColor("#696969"));
+                        pb.setText("+");
+
+                        pb.setTextColor(Color.parseColor("#000000"));
+
+
+
+                        System.out.println("View grp layout is " + ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                        //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(120, 120);
+                        //params.setMargins(0, 0, 10, 10);
+                        pb.setMinWidth(80);
+                        pb.setMinimumWidth(80);
+
+                        pb.setLayoutParams(paramstv);
 
 
 
 
-                    final Item_Quant iq = new Item_Quant();
+                        MaterialButton mb = new MaterialButton(getActivity(), null, R.attr.borderlessButtonStyle);
+                        //Button mb = new Button(getActivity().getApplicationContext());
 
-                    db.collection(Bhawan + "-orders").document(uid)
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful())
-                                    {
-                                        DocumentSnapshot document = task.getResult();
-                                        Map<String, Object> tempMap= (Map)document.get("Item");
-                                        if(tempMap !=null)
+                        if(aty)
+                            mb.setBackgroundColor(Color.parseColor("#D81B60"));
+                        else
+                            mb.setBackgroundColor(Color.parseColor("#696969"));
+                        mb.setText("-");
+                        mb.setTextColor(Color.parseColor("#000000"));
+                        mb.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+                        int t = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        mb.setMinWidth(80);
+                        mb.setMinimumWidth(80);
+
+                        mb.setLayoutParams(paramstv);
+
+
+
+                        ll.addView(pb);
+                        ll.addView(mb);
+                        gl.addView(ll);
+
+
+
+
+                        final Item_Quant iq = new Item_Quant();
+
+                        db.collection(Bhawan + "-orders").document(uid)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful())
                                         {
-                                            Map<String, Object> tempMap1 = (Map)tempMap.get(name);
-                                            if(tempMap1!=null)
+                                            DocumentSnapshot document = task.getResult();
+                                            Map<String, Object> tempMap= (Map)document.get("Item");
+                                            if(tempMap !=null)
                                             {
-                                                Long quant = (Long) tempMap1.get("Quantity");
-                                                iq.quant = quant.intValue();
-                                                if(quant!=0)
+                                                Map<String, Object> tempMap1 = (Map)tempMap.get(name);
+                                                if(tempMap1!=null)
                                                 {
-                                                    checkoutpossible = true;
+                                                    Long quant = (Long) tempMap1.get("Quantity");
+                                                    iq.quant = quant.intValue();
+                                                    if(iq.quant!=0)
+                                                    {
+                                                        checkoutpossible = true;
+                                                    }
+
                                                 }
-
                                             }
+
+
+
                                         }
-
-
-
+                                        else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
                                     }
-                                    else {
-                                        Log.d(TAG, "Error getting documents: ", task.getException());
-                                    }
+                                });
+
+                        //ORDERING
+                        if(aty) {
+                            pb.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    iq.quant_incrementer();
+                                    int id = v.getId();
+                                    checkoutpossible = true;
+                                    Toast toast = Toast.makeText(getActivity(), "No. of " + name + " in cart:" + iq.quant, Toast.LENGTH_LONG);
+                                    toast.show();
+                                    Map<String, Object> item = new HashMap<>();
+                                    item.put("Name", name);
+                                    item.put("Price", price);
+                                    item.put("Quantity", iq.quant);
+                                    Map<String, Object> itemmap = new HashMap<>();
+                                    itemmap.put(name, item);
+                                    Map<String, Object> toplayer = new HashMap<>();
+                                    toplayer.put("Item", itemmap);
+
+                                    db.collection(Bhawan + "-orders").document(uid)
+                                            .set(toplayer, SetOptions.merge())
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast toast = Toast.makeText(getActivity(), "Adding to cart failed", Toast.LENGTH_LONG);
+                                                    toast.show();
+                                                }
+                                            });
+
+
                                 }
                             });
 
-                    //ORDERING
-                    if(aty) {
-                        pb.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                iq.quant_incrementer();
-                                int id = v.getId();
-                                checkoutpossible = true;
-                                Toast toast = Toast.makeText(getActivity(), "No. of " + name + " in cart:" + iq.quant, Toast.LENGTH_LONG);
-                                toast.show();
-                                Map<String, Object> item = new HashMap<>();
-                                item.put("Name", name);
-                                item.put("Price", price);
-                                item.put("Quantity", iq.quant);
-                                Map<String, Object> itemmap = new HashMap<>();
-                                itemmap.put(name, item);
-                                Map<String, Object> toplayer = new HashMap<>();
-                                toplayer.put("Item", itemmap);
 
-                                db.collection(Bhawan + "-orders").document(uid)
-                                        .set(toplayer, SetOptions.merge())
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast toast = Toast.makeText(getActivity(), "Adding to cart failed", Toast.LENGTH_LONG);
-                                                toast.show();
-                                            }
-                                        });
+                            mb.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (iq.quant != 0)
+                                        iq.quant_decrementer();
 
+                                    if (iq.quant == 0)
+                                        checkoutpossible = false;
 
-                            }
-                        });
+                                    int id = v.getId();
+                                    Toast toast = Toast.makeText(getActivity(), "No. of " + name + " in cart:" + iq.quant, Toast.LENGTH_LONG);
+                                    toast.show();
+                                    Map<String, Object> item = new HashMap<>();
+                                    item.put("Name", name);
+                                    item.put("Price", price);
+                                    item.put("Quantity", iq.quant);
+                                    Map<String, Object> itemmap = new HashMap<>();
+                                    itemmap.put(name, item);
+                                    Map<String, Object> toplayer = new HashMap<>();
+                                    toplayer.put("Item", itemmap);
 
-
-                        mb.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if(iq.quant!=0)
-                                    iq.quant_decrementer();
-
-                                if(iq.quant==0)
-                                    checkoutpossible=false;
-
-                                int id = v.getId();
-                                Toast toast = Toast.makeText(getActivity(), "No. of " + name + " in cart:" + iq.quant, Toast.LENGTH_LONG);
-                                toast.show();
-                                Map<String, Object> item = new HashMap<>();
-                                item.put("Name", name);
-                                item.put("Price", price);
-                                item.put("Quantity", iq.quant);
-                                Map<String, Object> itemmap = new HashMap<>();
-                                itemmap.put(name, item);
-                                Map<String, Object> toplayer = new HashMap<>();
-                                toplayer.put("Item", itemmap);
-
-                                db.collection(Bhawan + "-orders").document(uid)
-                                        .set(toplayer, SetOptions.merge())
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast toast = Toast.makeText(getActivity(), "Adding to cart failed", Toast.LENGTH_LONG);
-                                                toast.show();
-                                            }
-                                        });
+                                    db.collection(Bhawan + "-orders").document(uid)
+                                            .set(toplayer, SetOptions.merge())
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast toast = Toast.makeText(getActivity(), "Adding to cart failed", Toast.LENGTH_LONG);
+                                                    toast.show();
+                                                }
+                                            });
 
 
-                            }
-                        });
+                                }
+                            });
+
+                    }
 
 
 
 
 
+
+
+                    }catch(Exception e) {
                     }
                 }
 
@@ -365,10 +376,11 @@ public class MenuPage extends Fragment {
 
 
 
-
-
+        MainActivity.mPrevFragment = MainActivity.mCurrentFragment;
+        MainActivity.mCurrentFragment = resumer;
         return view;
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

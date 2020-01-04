@@ -43,6 +43,7 @@ import java.time.LocalDateTime;
 
 import static android.content.ContentValues.TAG;
 import static com.example.canteen_app.MainActivity.Bhawan;
+import static com.example.canteen_app.MainActivity.Name;
 import static com.example.canteen_app.MainActivity.uid;
 
 
@@ -176,6 +177,7 @@ public class CheckoutFrag extends Fragment {
                                     LocalDateTime now = LocalDateTime.now();
                                     Map<String, Object> tempDoc = document.getData();
                                     tempDoc.put("Date", dtf.format(now));
+                                    tempDoc.put("Name", Name);
                                     db.collection(Bhawan + "-orders")
                                             .add(tempDoc);
                                     //Bhawan orders doesnt need bhawan name.
@@ -201,6 +203,22 @@ public class CheckoutFrag extends Fragment {
             }
         });
 
+
+        Button backb = view.findViewById(R.id.backbtn);
+
+        backb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                ft.replace(R.id.your_placeholder, new MenuPage());
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+            }
+        });
+        MainActivity.mPrevFragment = MainActivity.mCurrentFragment;
+        MainActivity.mCurrentFragment = resumer;
         return view;
     }
     @Override

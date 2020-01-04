@@ -13,9 +13,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -34,6 +36,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,7 +73,8 @@ public class OrderHistoryFrag extends Fragment {
         final Observer<Map<String, Object>> orderObserver = new Observer<Map<String, Object>>() {
             @Override
             public void onChanged(@Nullable final Map<String, Object> data) {
-
+                if(ll.getChildCount() > 0)
+                    ll.removeAllViews();
                 pb.setVisibility(View.GONE);
                 for (QueryDocumentSnapshot document : (QuerySnapshot)data.get("document")) {
 
@@ -83,6 +88,20 @@ public class OrderHistoryFrag extends Fragment {
                     LinearLayout cardlinear = new LinearLayout(getActivity());
                     cardlinear.setLayoutParams(param);
                     cardlinear.setOrientation(LinearLayout.VERTICAL);
+                    TextView orderState = new TextView(getActivity());
+                    if(document.get("OrderState").equals("Placed"))
+                    {
+                        orderState.setText("ACTIVE ORDER");
+                        orderState.setTextColor(Color.parseColor("#63EC27"));
+                    }
+                    if(document.get("OrderState").equals("Delivered"))
+                    {
+                        orderState.setText("DELIVERED");
+                        orderState.setTextColor(Color.parseColor("#000000"));
+                    }
+                    orderState.setGravity(Gravity.CENTER_HORIZONTAL);
+                    cardlinear.addView(orderState);
+
 
                     TextView bhawan = new TextView(getActivity());
                     bhawan.setText("Bhawan : " + document.get("Bhawan") );
@@ -160,9 +179,42 @@ public class OrderHistoryFrag extends Fragment {
 
                     tot.setLayoutParams(param);
                     cardlinear.addView(tot);
+
+                    final String Date = (String)document.get("Date");
+                    Button del = new Button(getActivity());
+                    del.setText("Delete");
+                    del.setBackgroundColor(Color.parseColor("#F60034"));
+                    del.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            db.collection("users").document("usersdoc").collection(uid)
+                                    .whereEqualTo("Date", Date)
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    document.getReference().delete();
+
+                                                }
+
+                                            } else {
+                                                Log.d(TAG, "Error getting documents: ", task.getException());
+                                            }
+                                        }
+                                    });
+                        }
+                    });
+                    cardlinear.addView(del);
+
+
                     materialCardView.addView(cardlinear);
+
+
                     ll.addView(materialCardView);
                 }
+
 
 
             }};
@@ -196,7 +248,8 @@ public class OrderHistoryFrag extends Fragment {
 
 
 
-
+        MainActivity.mPrevFragment = MainActivity.mCurrentFragment;
+        MainActivity.mCurrentFragment = resumer;
 
         return view;
     }
